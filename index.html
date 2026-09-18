@@ -43,7 +43,6 @@ button{font:inherit;cursor:pointer}
 .challenge strong{display:block;margin-top:4px;font-size:16px;line-height:1.3}
 .notice{position:absolute;left:14px;bottom:14px;z-index:8;max-width:74%;padding:9px 11px;border-radius:9px;background:rgba(13,16,19,.82);color:#e7eaed;font-size:12px;line-height:1.4}
 
-/* Demo scene */
 .sim-bg{position:absolute;inset:0;background:#24292e}
 .grid{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:48px 48px}
 .person{position:absolute;left:44%;bottom:8%;width:220px;height:330px;transform:translateX(-50%)}
@@ -85,7 +84,7 @@ button{font:inherit;cursor:pointer}
 .mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:24px}
 .mode{text-align:left;padding:17px;border-radius:12px;border:1px solid var(--line-strong);background:var(--surface);color:var(--text)}
 .mode:hover{background:var(--surface2);border-color:#aeb6bd}
-.mode strong{display:block;font-size:15px}.mode span{display:block;margin-top:6px;color:var(--muted);font-size:13px;line-height:1.4}
+.mode strong{display:block;font-size:15px}
 .foot{display:grid;gap:5px;margin-top:20px;color:#7a848d;font-size:12px;line-height:1.45}
 @media(max-width:920px){.layout{grid-template-columns:1fr}.feed{min-height:340px}}
 @media(max-width:620px){.shell{padding:10px}.topbar{align-items:flex-start;flex-direction:column}.entry{padding:12px}.entry-card{padding:24px}.entry h1{font-size:27px}.mode-grid{grid-template-columns:1fr}.challenge{max-width:210px}.notice{max-width:88%}}
@@ -104,14 +103,8 @@ button{font:inherit;cursor:pointer}
     </ol>
 
     <div class="mode-grid">
-      <button class="mode" data-mode="operator">
-        <strong>Веб-камера ПК</strong>
-        <span>Камера компьютера наблюдает лицо, телефон и код на его экране.</span>
-      </button>
-      <button class="mode" data-mode="verifier">
-        <strong>Телефон</strong>
-        <span>Представление второй стороны сценария с дополнительными статусами проверки.</span>
-      </button>
+      <button class="mode" data-mode="operator"><strong>Веб-камера ПК</strong></button>
+      <button class="mode" data-mode="verifier"><strong>Телефон</strong></button>
     </div>
 
     <div class="foot">
