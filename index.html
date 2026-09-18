@@ -81,12 +81,12 @@ button{font:inherit;cursor:pointer}
 .entry-card{width:min(760px,100%);padding:34px}
 .eyebrow{font-size:12px;font-weight:700;color:#59636c}
 .entry h1{margin:9px 0 0;font-size:32px;letter-spacing:-.02em}
-.lead{margin:12px 0 0;color:var(--muted);font-size:16px;line-height:1.55;max-width:650px}
-.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:28px}
+.instructions{margin:18px 0 0;padding-left:22px;color:var(--muted);font-size:15px;line-height:1.75}
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:24px}
 .mode{text-align:left;padding:17px;border-radius:12px;border:1px solid var(--line-strong);background:var(--surface);color:var(--text)}
 .mode:hover{background:var(--surface2);border-color:#aeb6bd}
 .mode strong{display:block;font-size:15px}.mode span{display:block;margin-top:6px;color:var(--muted);font-size:13px;line-height:1.4}
-.foot{margin-top:20px;color:#7a848d;font-size:12px;line-height:1.45}
+.foot{display:grid;gap:5px;margin-top:20px;color:#7a848d;font-size:12px;line-height:1.45}
 @media(max-width:920px){.layout{grid-template-columns:1fr}.feed{min-height:340px}}
 @media(max-width:620px){.shell{padding:10px}.topbar{align-items:flex-start;flex-direction:column}.entry{padding:12px}.entry-card{padding:24px}.entry h1{font-size:27px}.mode-grid{grid-template-columns:1fr}.challenge{max-width:210px}.notice{max-width:88%}}
 </style>
@@ -96,8 +96,12 @@ button{font:inherit;cursor:pointer}
 <section id="entry" class="entry">
   <div class="card entry-card">
     <div class="eyebrow">ResearchSpace</div>
-    <h1>Ознакомьтесь с вариантами проверки</h1>
-    <p class="lead">Ниже — два представления одного сценария. Откройте их по очереди, чтобы увидеть, что происходит на стороне компьютера и на стороне телефона. Для веб-камеры браузер запросит разрешение; если доступа нет, будет показана демонстрация.</p>
+    <h1>Инструкция</h1>
+    <ol class="instructions">
+      <li>Откройте «Веб-камера ПК».</li>
+      <li>Разрешите доступ к камере или продолжите без него.</li>
+      <li>Откройте «Телефон» и ознакомьтесь со второй частью сценария.</li>
+    </ol>
 
     <div class="mode-grid">
       <button class="mode" data-mode="operator">
@@ -110,7 +114,10 @@ button{font:inherit;cursor:pointer}
       </button>
     </div>
 
-    <div class="foot">Для ознакомления откройте оба варианта. Доступ к камере можно не предоставлять — тогда включится демонстрационный сценарий.</div>
+    <div class="foot">
+      <span>Доступ к камере можно не предоставлять, тогда включится демонстрационный сценарий.</span>
+      <span>Все вычисления выполняются локально в браузере. Данные не отправляются на сервер.</span>
+    </div>
   </div>
 </section>
 
