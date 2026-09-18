@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<title>Profile B — Unified Prototype</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg:#0b0d10; --panel:#13171c; --panel2:#0e1216; --line:#28323b;
+  --text:#f3f5f7; --muted:#97a3ad; --ok:#2d6a4e; --warn:#7b672f; --bad:#7a3a3a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh}
+button,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.shell{max-width:1480px;margin:0 auto;padding:18px}
+.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 75px rgba(0,0,0,.25)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.topbar h1{margin:0;font-size:20px}
+.topbar p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;border:1px solid #3b4751;background:#20262d;color:#f3f5f7;padding:10px 13px;border-radius:11px;font-weight:700}
+.btn.primary{background:#f3f5f7;color:#0b0d10;border-color:#f3f5f7}
+.btn.active{border-color:#dfe5ea;background:#2a3239}
+.btn.ghost{background:transparent}
+.pill{padding:7px 10px;border-radius:999px;background:#1a2128;border:1px solid #34404a;color:#d8dfe5;font-size:11px}
+.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(350px,.7fr);gap:16px}
+.panel{overflow:hidden}
+.panel-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.panel-body{padding:16px}
+.feed{position:relative;aspect-ratio:16/10;min-height:420px;overflow:hidden;background:#030405}
+.feed video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#030405}
+.feed canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.feed-label{position:absolute;left:12px;top:12px;z-index:8;padding:6px 9px;border-radius:999px;background:rgba(5,7,9,.74);border:1px solid rgba(255,255,255,.13);font-size:10px}
+.challenge{position:absolute;right:12px;top:12px;z-index:8;min-width:180px;padding:10px 12px;border-radius:12px;background:rgba(5,7,9,.84);border:1px solid rgba(255,255,255,.13)}
+.challenge small{display:block;color:#9ca8b2;font-size:9px;letter-spacing:.12em}
+.challenge strong{display:block;margin-top:3px;font-size:18px}
+.notice{position:absolute;left:12px;bottom:12px;z-index:8;max-width:70%;padding:9px 11px;border-radius:11px;background:rgba(5,7,9,.76);font-size:11px;color:#c8d0d7;line-height:1.35}
+
+/* simulated feed */
+.sim-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.08),transparent 28%),linear-gradient(180deg,#252a30 0 61%,#15191d 61% 100%)}
+.grid{position:absolute;inset:0;opacity:.1;background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:48px 48px}
+.person{position:absolute;left:44%;bottom:8%;width:220px;height:330px;transform:translateX(-50%)}
+.head{position:absolute;left:74px;top:0;width:78px;height:94px;border-radius:48% 48% 44% 44%;background:#c5cbd0}
+.neck{position:absolute;left:94px;top:83px;width:40px;height:35px;background:#aeb6bc}
+.torso{position:absolute;left:38px;top:110px;width:154px;height:190px;border-radius:72px 72px 28px 28px;background:#929ca4}
+.shoulder{position:absolute;left:31px;top:120px;width:170px;height:72px;border-radius:44px;background:#929ca4}
+.arm{position:absolute;right:-25px;top:135px;width:35px;height:150px;border-radius:30px;background:#aeb6bc;transform-origin:17px 15px;transition:transform .65s ease,top .65s ease,right .65s ease}
+.hand{position:absolute;right:-6px;bottom:-18px;width:42px;height:42px;border-radius:50%;background:#c5cbd0}
+.phone{position:absolute;right:-92px;top:186px;width:88px;height:150px;border-radius:17px;background:#0d1013;border:4px solid #d7dde1;box-shadow:0 10px 25px rgba(0,0,0,.35);transform:rotate(-3deg);transition:transform .65s ease,right .65s ease,top .65s ease}
+.phone-screen{position:absolute;inset:7px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#e8ecef,#b7c0c7)}
+.face-dot{position:absolute;left:50%;top:56%;width:32px;height:39px;border-radius:50%;background:#7f8991;transform:translate(-50%,-50%)}
+.qr-mini{position:absolute;left:7px;top:7px;width:34px;height:34px;background:linear-gradient(90deg,#111 25%,#fff 25% 50%,#111 50% 75%,#fff 75%),linear-gradient(#111 25%,#fff 25% 50%,#111 50% 75%,#fff 75%);background-size:8px 8px;border:3px solid #fff;box-shadow:0 0 0 1px #111}
+.sim[data-step="1"] .phone{top:140px;right:-40px} .sim[data-step="1"] .arm{transform:rotate(-36deg);top:112px;right:2px}
+.sim[data-step="2"] .phone{top:112px;right:40px} .sim[data-step="2"] .arm{transform:rotate(-62deg);top:94px;right:28px}
+.sim[data-step="3"] .phone{top:112px;right:4px;transform:translateX(70px) rotate(-3deg)} .sim[data-step="3"] .arm{transform:rotate(-55deg)}
+
+/* right side */
+.status-list{display:grid;gap:9px}
+.status{display:grid;grid-template-columns:1fr auto;gap:10px;padding:11px 12px;border-radius:11px;background:var(--panel2);border:1px solid #252d34}
+.status span{color:#abb5bd;font-size:13px} .status strong{font-size:12px}
+.status.ok{border-color:var(--ok)} .status.warn{border-color:var(--warn)} .status.bad{border-color:var(--bad)}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+.metric{padding:10px;border-radius:10px;background:#0d1115;border:1px solid #252d34}
+.metric small{display:block;color:#8d99a3;font-size:9px;letter-spacing:.08em} .metric strong{display:block;margin-top:4px;font-size:15px}
+.result{margin-top:12px;padding:18px;border-radius:14px;background:#0b0f13;border:1px solid #29323b;text-align:center}
+.result small{display:block;color:#8e9aa5;font-size:9px;letter-spacing:.13em} .result strong{display:block;margin-top:5px;font-size:30px}
+.result.pass{border-color:var(--ok)} .result.fail{border-color:var(--bad)}
+.log{margin-top:12px;height:180px;overflow:auto;padding:10px;border-radius:11px;background:#090c0f;border:1px solid #252d34;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#b8c2ca}
+.note{margin-top:10px;color:#84919c;font-size:11px;line-height:1.4}
+
+/* landing */
+.entry{min-height:100vh;display:grid;place-items:center;padding:24px}
+.entry-card{width:min(980px,100%);padding:30px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#87949f}
+.entry h2{margin:7px 0 0;font-size:32px}
+.lead{color:#acb7c0;font-size:17px;line-height:1.55;max-width:800px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0}
+.step{padding:14px;border-radius:13px;background:#0e1216;border:1px solid #29323b}
+.step b{display:block;font-size:12px} .step span{display:block;margin-top:5px;color:#909da8;font-size:12px;line-height:1.4}
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+.mode{text-align:left;padding:17px;border-radius:15px;border:1px solid #34404a;background:#171c21;color:#f3f5f7}
+.mode strong{display:block;font-size:16px} .mode span{display:block;margin-top:6px;color:#9ca8b2;font-size:12px;line-height:1.4}
+.foot{margin-top:16px;color:#788590;font-size:11px;line-height:1.45}
+@media(max-width:920px){.layout{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.feed{min-height:340px}}
+@media(max-width:600px){.shell{padding:10px}.topbar{align-items:flex-start;flex-direction:column}.entry{padding:12px}.entry-card{padding:20px}.entry h2{font-size:26px}.mode-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<section id="entry" class="entry">
+  <div class="card entry-card">
+    <div class="eyebrow">Profile B · Unified Interactive Prototype</div>
+    <h2>Одна точка входа</h2>
+    <p class="lead">
+      Выберите роль. Внутри Operator и Verifier можно использовать реальную веб-камеру
+      или Presentation Mode. Если доступ к камере запрещён или Camera API недоступен,
+      система автоматически переключится на simulated feed.
+    </p>
+
+    <div class="steps">
+      <div class="step"><b>1 · Operator</b><span>Ключевые статусы и итог PASS / FAIL без технических деталей.</span></div>
+      <div class="step"><b>2 · Verifier</b><span>Тот же поток + evidence, detection metrics и trace.</span></div>
+      <div class="step"><b>3 · Fallback</b><span>При отказе камеры включается явно маркированный Presentation Mode.</span></div>
+    </div>
+
+    <div class="mode-grid">
+      <button class="mode" data-mode="operator"><strong>Operator</strong><span>Открыть интерфейс сотрудника.</span></button>
+      <button class="mode" data-mode="verifier"><strong>Verifier</strong><span>Открыть технический режим проверки.</span></button>
+    </div>
+
+    <div class="foot">
+      Прямые ссылки: <code>#operator</code> и <code>#verifier</code>.
+      Для Live Camera страницу лучше отдавать через HTTPS.
+    </div>
+  </div>
+</section>
+
+<main id="app" class="shell hidden">
+  <header class="topbar">
+    <div>
+      <h1>Profile B — Unified Prototype</h1>
+      <p>Live CV when available · Presentation fallback otherwise</p>
+    </div>
+    <div class="controls">
+      <span id="modePill" class="pill">OPERATOR</span>
+      <button id="homeBtn" class="btn ghost">Главная</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="panel">
+      <div class="panel-head">
+        <strong>Verification feed</strong>
+        <div class="controls">
+          <button id="liveBtn" class="btn primary">Live Camera</button>
+          <button id="simBtn" class="btn">Presentation Mode</button>
+          <button id="challengeBtn" class="btn">New challenge</button>
+        </div>
+      </div>
+
+      <div id="feed" class="feed">
+        <video id="video" class="hidden" autoplay muted playsinline></video>
+        <canvas id="overlay" class="hidden"></canvas>
+
+        <div id="simFeed" class="sim" data-step="0">
+          <div class="sim-bg"></div>
+          <div class="grid"></div>
+          <div class="person">
+            <div class="head"></div>
+            <div class="neck"></div>
+            <div class="shoulder"></div>
+            <div class="torso"></div>
+            <div class="arm"><div class="hand"></div></div>
+            <div class="phone">
+              <div class="phone-screen">
+                <div class="qr-mini"></div>
+                <div class="face-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="feedLabel" class="feed-label">PRESENTATION MODE · SIMULATED FEED</div>
+        <div class="challenge"><small>CURRENT CHALLENGE</small><strong id="challengeText">MOVE RIGHT →</strong></div>
+        <div id="notice" class="notice">Presentation Mode: статусы синхронизированы сценарием, а не реальным CV.</div>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="panel-head">
+        <strong id="rightTitle">Operator status</strong>
+        <span id="sourcePill" class="pill">SIMULATED</span>
+      </div>
+      <div class="panel-body">
+        <div class="status-list">
+          <div class="status" id="stCamera"><span>Camera / feed</span><strong>simulated</strong></div>
+          <div class="status" id="stPhone"><span>Phone screen detected</span><strong>waiting</strong></div>
+          <div class="status" id="stQr"><span>QR detected</span><strong>waiting</strong></div>
+          <div class="status" id="stFace"><span>Face detected</span><strong>waiting</strong></div>
+          <div class="status" id="stChallenge"><span>Challenge response</span><strong>waiting</strong></div>
+          <div class="status verifier-only" id="stConsistency"><span>Cross-signal consistency</span><strong>waiting</strong></div>
+        </div>
+
+        <div class="metrics verifier-only">
+          <div class="metric"><small>PHONE CONF.</small><strong id="mPhone">—</strong></div>
+          <div class="metric"><small>FACE CONF.</small><strong id="mFace">—</strong></div>
+          <div class="metric"><small>QR STATE</small><strong id="mQr">—</strong></div>
+          <div class="metric"><small>MOTION ΔX</small><strong id="mMotion">—</strong></div>
+        </div>
+
+        <div id="result" class="result"><small>VERIFICATION</small><strong id="resultText">WAITING</strong></div>
+        <div id="log" class="log verifier-only"><div>00:00.000 · verifier idle</div></div>
+
+        <div class="note">
+          Live Camera — реальный webcam поток через <code>getUserMedia()</code>.
+          Presentation Mode — fallback для показа UX/логики, если доступ к камере не разрешён.
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  const entry = document.getElementById('entry');
+  const app = document.getElementById('app');
+  const video = document.getElementById('video');
+  const overlay = document.getElementById('overlay');
+  const ctx = overlay.getContext('2d');
+  const simFeed = document.getElementById('simFeed');
+  const feedLabel = document.getElementById('feedLabel');
+  const notice = document.getElementById('notice');
+  const modePill = document.getElementById('modePill');
+  const sourcePill = document.getElementById('sourcePill');
+  const rightTitle = document.getElementById('rightTitle');
+  const challengeText = document.getElementById('challengeText');
+  const liveBtn = document.getElementById('liveBtn');
+  const simBtn = document.getElementById('simBtn');
+  const result = document.getElementById('result');
+  const resultText = document.getElementById('resultText');
+  const log = document.getElementById('log');
+
+  const statuses = {
+    camera: document.getElementById('stCamera'),
+    phone: document.getElementById('stPhone'),
+    qr: document.getElementById('stQr'),
+    face: document.getElementById('stFace'),
+    challenge: document.getElementById('stChallenge'),
+    consistency: document.getElementById('stConsistency')
+  };
+
+  const metrics = {
+    phone: document.getElementById('mPhone'),
+    face: document.getElementById('mFace'),
+    qr: document.getElementById('mQr'),
+    motion: document.getElementById('mMotion')
+  };
+
+  let mode = 'operator';
+  let source = 'sim';
+  let stream = null;
+  let barcodeDetector = null;
+  let faceDetector = null;
+  let running = false;
+  let challenge = null;
+  let baseline = null;
+  let simTimers = [];
+  let t0 = performance.now();
+
+  const EXPECTED_QR = "PROFILE-B-DEMO|STATIC-QR|V1";
+
+  function setStatus(key, cls, text) {
+    const el = statuses[key];
+    el.classList.remove('ok','warn','bad');
+    if (cls) el.classList.add(cls);
+    el.querySelector('strong').textContent = text;
+  }
+
+  function addLog(text) {
+    const t = ((performance.now() - t0) / 1000).toFixed(3).padStart(6,'0');
+    const div = document.createElement('div');
+    div.textContent = `${t} · ${text}`;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function clearSimTimers() {
+    simTimers.forEach(clearTimeout);
+    simTimers = [];
+  }
+
+  function later(ms, fn) {
+    simTimers.push(setTimeout(fn, ms));
+  }
+
+  function stopCamera() {
+    running = false;
+    if (stream) {
+      stream.getTracks().forEach(t => { try { t.stop(); } catch (_) {} });
+      stream = null;
+    }
+    video.srcObject = null;
+  }
+
+  function resetResult() {
+    result.classList.remove('pass','fail');
+    resultText.textContent = 'WAITING';
+    setStatus('phone','','waiting');
+    setStatus('qr','','waiting');
+    setStatus('face','','waiting');
+    setStatus('challenge','','waiting');
+    setStatus('consistency','','waiting');
+    Object.values(metrics).forEach(el => el.textContent = '—');
+  }
+
+  function chooseChallenge() {
+    const options = [
+      {id:'right',label:'MOVE RIGHT →'},
+      {id:'left',label:'← MOVE LEFT'},
+      {id:'closer',label:'MOVE CLOSER'}
+    ];
+    challenge = options[Math.floor(Math.random()*options.length)];
+    challengeText.textContent = challenge.label;
+    baseline = null;
+    resetResult();
+    addLog(`challenge=${challenge.id}`);
+  }
+
+  function setMode(next) {
+    mode = next === 'verifier' ? 'verifier' : 'operator';
+    location.hash = mode;
+    entry.classList.add('hidden');
+    app.classList.remove('hidden');
+    modePill.textContent = mode.toUpperCase();
+    rightTitle.textContent = mode === 'verifier' ? 'Verifier evidence' : 'Operator status';
+    document.querySelectorAll('.verifier-only').forEach(el => el.classList.toggle('hidden', mode !== 'verifier'));
+    if (!challenge) chooseChallenge();
+  }
+
+  document.querySelectorAll('[data-mode]').forEach(btn => {
+    btn.addEventListener('click', () => setMode(btn.dataset.mode));
+  });
+
+  document.getElementById('homeBtn').addEventListener('click', () => {
+    stopCamera();
+    clearSimTimers();
+    app.classList.add('hidden');
+    entry.classList.remove('hidden');
+    history.replaceState(null,'',location.pathname + location.search);
+  });
+
+  function setSource(next) {
+    source = next;
+    liveBtn.classList.toggle('active', source === 'live');
+    simBtn.classList.toggle('active', source === 'sim');
+
+    if (source === 'live') {
+      simFeed.classList.add('hidden');
+      video.classList.remove('hidden');
+      overlay.classList.remove('hidden');
+      feedLabel.textContent = 'LIVE CAMERA';
+      sourcePill.textContent = 'LIVE';
+      notice.textContent = 'Live Camera: реальный webcam поток. Доступность QR/Face detector зависит от браузера.';
+    } else {
+      stopCamera();
+      video.classList.add('hidden');
+      overlay.classList.add('hidden');
+      simFeed.classList.remove('hidden');
+      feedLabel.textContent = 'PRESENTATION MODE · SIMULATED FEED';
+      sourcePill.textContent = 'SIMULATED';
+      notice.textContent = 'Presentation Mode: статусы синхронизированы сценарием, а не реальным CV.';
+      setStatus('camera','warn','simulated');
+      runPresentation();
+    }
+  }
+
+  async function requestCamera() {
+    const attempts = [
+      {audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}},
+      {audio:false,video:true}
+    ];
+    let last = null;
+    for (const c of attempts) {
+      try { return await navigator.mediaDevices.getUserMedia(c); }
+      catch (e) {
+        last = e;
+        if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e;
+      }
+    }
+    throw last || new Error('Camera unavailable');
+  }
+
+  async function startLive() {
+    clearSimTimers();
+    resetResult();
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      addLog('Camera API unavailable → fallback to Presentation Mode');
+      setSource('sim');
+      return;
+    }
+
+    try {
+      stopCamera();
+      source = 'live';
+      setSource('live');
+      setStatus('camera','warn','requesting');
+      t0 = performance.now();
+      log.innerHTML = '';
+
+      stream = await requestCamera();
+      video.srcObject = stream;
+      await video.play();
+      setStatus('camera','ok','live');
+      addLog('webcam started');
+
+      if ('BarcodeDetector' in window) {
+        try { barcodeDetector = new BarcodeDetector({formats:['qr_code']}); }
+        catch (_) { barcodeDetector = new BarcodeDetector(); }
+        addLog('BarcodeDetector enabled');
+      } else {
+        barcodeDetector = null;
+        setStatus('qr','warn','unsupported');
+        addLog('BarcodeDetector unavailable');
+      }
+
+      if ('FaceDetector' in window) {
+        try { faceDetector = new FaceDetector({fastMode:true,maxDetectedFaces:4}); }
+        catch (_) { faceDetector = null; }
+        addLog(faceDetector ? 'FaceDetector enabled' : 'FaceDetector init failed');
+      } else {
+        faceDetector = null;
+        setStatus('face','warn','unsupported');
+        addLog('FaceDetector unavailable');
+      }
+
+      running = true;
+    } catch (e) {
+      addLog(`camera denied/unavailable: ${e.name || e}`);
+      notice.textContent = `Camera недоступна (${e.name || 'error'}). Автоматически включён Presentation Mode.`;
+      setSource('sim');
+    }
+  }
+
+  function runPresentation() {
+    clearSimTimers();
+    resetResult();
+    simFeed.dataset.step = '0';
+    t0 = performance.now();
+    log.innerHTML = '';
+    addLog('presentation scenario started');
+
+    later(450, () => {
+      simFeed.dataset.step = '1';
+      setStatus('phone','warn','detecting');
+      addLog('phone candidate enters frame');
+    });
+    later(1000, () => {
+      simFeed.dataset.step = '2';
+      setStatus('phone','ok','detected');
+      metrics.phone.textContent = '0.99';
+      addLog('phone screen detected conf=0.99');
+    });
+    later(1450, () => {
+      setStatus('qr','ok','valid');
+      metrics.qr.textContent = 'valid';
+      addLog('QR recognized');
+    });
+    later(1850, () => {
+      setStatus('face','ok','detected');
+      metrics.face.textContent = '0.97';
+      addLog('face detected on phone screen');
+    });
+    later(2350, () => {
+      simFeed.dataset.step = '3';
+      setStatus('challenge','ok','passed');
+      metrics.motion.textContent = '+84 px';
+      addLog('motion matched challenge');
+    });
+    later(2850, () => {
+      setStatus('consistency','ok','consistent');
+      result.classList.add('pass');
+      resultText.textContent = 'PASS';
+      addLog('FINAL PASS');
+    });
+  }
+
+  function boxMetrics(box) {
+    return {cx:box.x+box.width/2,cy:box.y+box.height/2,area:box.width*box.height,box};
+  }
+
+  function checkChallenge(m) {
+    if (!challenge) return;
+    metrics.motion.textContent = baseline ? `${Math.round(m.cx-baseline.cx)} px` : '0 px';
+
+    if (!baseline) {
+      baseline = {...m};
+      setStatus('challenge','warn','move phone');
+      return;
+    }
+
+    const dx = m.cx - baseline.cx;
+    const ratio = baseline.area > 0 ? m.area / baseline.area : 1;
+    const threshold = Math.max(45, video.videoWidth * 0.05);
+    let pass = false;
+
+    if (challenge.id === 'right') pass = dx > threshold;
+    if (challenge.id === 'left') pass = dx < -threshold;
+    if (challenge.id === 'closer') pass = ratio > 1.45;
+
+    if (pass) {
+      setStatus('challenge','ok','passed');
+      setStatus('consistency','ok','consistent');
+      result.classList.add('pass');
+      resultText.textContent = 'PASS';
+      addLog(`challenge passed dx=${Math.round(dx)} ratio=${ratio.toFixed(2)}`);
+    }
+  }
+
+  async function frameLoop() {
+    if (running && source === 'live' && video.videoWidth) {
+      if (overlay.width !== video.videoWidth || overlay.height !== video.videoHeight) {
+        overlay.width = video.videoWidth;
+        overlay.height = video.videoHeight;
+      }
+      ctx.clearRect(0,0,overlay.width,overlay.height);
+
+      if (barcodeDetector) {
+        try {
+          const codes = await barcodeDetector.detect(video);
+          const code = codes.find(c => c.rawValue === EXPECTED_QR);
+          if (code) {
+            const m = boxMetrics(code.boundingBox);
+            setStatus('qr','ok','recognized');
+            setStatus('phone','ok','phone/QR seen');
+            metrics.phone.textContent = 'detected';
+            metrics.qr.textContent = 'valid';
+
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(m.box.x,m.box.y,m.box.width,m.box.height);
+            checkChallenge(m);
+          } else {
+            setStatus('qr','warn','searching');
+          }
+        } catch (_) {
+          setStatus('qr','warn','scan error');
+        }
+      }
+
+      if (faceDetector) {
+        try {
+          const faces = await faceDetector.detect(video);
+          setStatus('face',faces.length?'ok':'warn',faces.length?`${faces.length} detected`:'searching');
+          metrics.face.textContent = String(faces.length);
+        } catch (_) {
+          setStatus('face','warn','scan error');
+        }
+      }
+    }
+    requestAnimationFrame(frameLoop);
+  }
+
+  liveBtn.addEventListener('click', startLive);
+  simBtn.addEventListener('click', () => setSource('sim'));
+  document.getElementById('challengeBtn').addEventListener('click', () => {
+    chooseChallenge();
+    if (source === 'sim') runPresentation();
+  });
+
+  const initial = location.hash.replace('#','');
+  if (initial === 'operator' || initial === 'verifier') setMode(initial);
+
+  setSource('sim');
+  requestAnimationFrame(frameLoop);
+})();
+</script>
+</body>
+</html>
