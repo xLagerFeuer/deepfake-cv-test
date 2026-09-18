@@ -88,8 +88,62 @@ button{font:inherit;cursor:pointer}
 .mode-icon{width:24px;height:24px;flex:0 0 24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .mode.recommended{border-color:var(--text);box-shadow:0 0 0 1px var(--text);background:#fafafa}
 .foot{display:grid;gap:5px;margin-top:20px;color:#7a848d;font-size:12px;line-height:1.45}
-@media(max-width:920px){.layout{grid-template-columns:1fr}.feed{min-height:340px}}
-@media(max-width:620px){.shell{padding:10px}.topbar{align-items:flex-start;flex-direction:column}.entry{padding:12px}.entry-card{padding:24px}.entry h1{font-size:27px}.mode-grid{grid-template-columns:1fr}.challenge{max-width:210px}.notice{max-width:88%}}
+@media(max-width:920px){
+  .layout{grid-template-columns:1fr}
+  .feed{min-height:340px}
+}
+@media(max-width:620px){
+  body{background:var(--surface)}
+  .shell{padding:10px 10px calc(18px + env(safe-area-inset-bottom));max-width:none}
+  .card,.panel{border-radius:12px}
+
+  .entry{min-height:100dvh;place-items:start stretch;padding:max(16px,env(safe-area-inset-top)) 14px max(20px,env(safe-area-inset-bottom))}
+  .entry-card{width:100%;padding:22px 18px;border:none;border-radius:0}
+  .entry h1{font-size:27px;line-height:1.12}
+  .instructions{margin-top:14px;padding-left:20px;font-size:14px;line-height:1.55}
+  .mode-grid{grid-template-columns:1fr;gap:10px;margin-top:20px}
+  .mode{min-height:64px;padding:16px 17px;gap:14px}
+  .mode strong{font-size:16px}
+  .mode-icon{width:28px;height:28px;flex-basis:28px}
+  .foot{margin-top:17px;font-size:11px;line-height:1.45}
+
+  .topbar{margin-bottom:10px;gap:10px;align-items:center;flex-direction:row}
+  .topbar>div:first-child{min-width:0;flex:1}
+  .brand{font-size:14px}
+  .brand-mark{width:22px;height:22px}
+  .topbar p{display:none}
+  .topbar>.controls{flex:0 0 auto;gap:4px}
+  .topbar .pill{max-width:126px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;padding:5px 7px}
+  .topbar .btn{padding:7px 8px;font-size:12px}
+
+  .layout{gap:10px}
+  .panel-head{min-height:48px;padding:10px 11px}
+  .panel-head>.controls{width:auto}
+  .panel-head>.controls .btn{padding:8px 9px;font-size:11px}
+  .panel-body{padding:11px}
+
+  .feed{aspect-ratio:auto;height:min(61dvh,520px);min-height:390px}
+  .feed-label{left:10px;top:10px;font-size:9px;padding:5px 7px}
+  .challenge{left:10px;right:10px;top:48px;max-width:none;padding:9px 11px}
+  .challenge strong{font-size:15px}
+  .notice{left:10px;right:10px;bottom:10px;max-width:none;padding:8px 10px;font-size:11px}
+
+  .person{left:44%;bottom:6%;transform:translateX(-50%) scale(.82);transform-origin:bottom center}
+  .status-list{gap:7px}
+  .status{padding:10px}
+  .metrics{gap:7px}
+  .result{margin-top:10px;padding:14px}
+  .result strong{font-size:21px}
+  .log{height:145px}
+}
+@media(max-width:380px){
+  .entry{padding-left:10px;padding-right:10px}
+  .entry-card{padding-left:12px;padding-right:12px}
+  .feed{height:58dvh;min-height:360px}
+  .mode{min-height:60px;padding:14px}
+  .challenge strong{font-size:14px}
+  .topbar .pill{max-width:106px}
+}
 </style>
 </head>
 <body>
