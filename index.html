@@ -3,143 +3,137 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0d10">
-<title>Profile B — Unified Prototype</title>
+<meta name="theme-color" content="#f5f6f8">
+<title>ResearchSpace — Camera verification</title>
 <style>
-:root {
-  color-scheme: dark;
-  --bg:#0b0d10; --panel:#13171c; --panel2:#0e1216; --line:#28323b;
-  --text:#f3f5f7; --muted:#97a3ad; --ok:#2d6a4e; --warn:#7b672f; --bad:#7a3a3a;
+:root{
+  color-scheme:light;
+  --bg:#f5f6f8;--surface:#fff;--surface2:#f8f9fa;--text:#17191c;--muted:#66707a;
+  --line:#e0e4e8;--line-strong:#cbd1d7;--ok:#237a4b;--warn:#9a6a16;--bad:#b43c3c;--dark:#111417;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body{min-height:100vh}
-button,select{font:inherit}
-button{cursor:pointer}
+button{font:inherit;cursor:pointer}
 .hidden{display:none!important}
-.shell{max-width:1480px;margin:0 auto;padding:18px}
-.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 75px rgba(0,0,0,.25)}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
-.topbar h1{margin:0;font-size:20px}
+.shell{max-width:1440px;margin:0 auto;padding:22px}
+.card,.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.brand-mark{width:24px;height:24px;border:1px solid var(--text);border-radius:7px;display:grid;place-items:center;font-size:11px}
 .topbar p{margin:4px 0 0;color:var(--muted);font-size:13px}
-.controls{display:flex;gap:8px;flex-wrap:wrap}
-.btn{appearance:none;border:1px solid #3b4751;background:#20262d;color:#f3f5f7;padding:10px 13px;border-radius:11px;font-weight:700}
-.btn.primary{background:#f3f5f7;color:#0b0d10;border-color:#f3f5f7}
-.btn.active{border-color:#dfe5ea;background:#2a3239}
-.btn.ghost{background:transparent}
-.pill{padding:7px 10px;border-radius:999px;background:#1a2128;border:1px solid #34404a;color:#d8dfe5;font-size:11px}
-.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(350px,.7fr);gap:16px}
+.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;border:1px solid var(--line-strong);background:var(--surface);color:var(--text);padding:9px 12px;border-radius:9px;font-weight:600;font-size:13px}
+.btn:hover{background:var(--surface2)}
+.btn.primary{background:var(--text);color:#fff;border-color:var(--text)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.active{border-color:#8d969f;background:#eef1f3}
+.pill{padding:6px 9px;border-radius:999px;background:#eef1f3;border:1px solid var(--line);color:#535d66;font-size:11px;font-weight:650}
+.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,.65fr);gap:14px}
 .panel{overflow:hidden}
-.panel-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
-.panel-body{padding:16px}
-.feed{position:relative;aspect-ratio:16/10;min-height:420px;overflow:hidden;background:#030405}
-.feed video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#030405}
+.panel-head{min-height:52px;padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.panel-head strong{font-size:14px}
+.panel-body{padding:14px}
+.feed{position:relative;aspect-ratio:16/10;min-height:430px;overflow:hidden;background:#090b0d}
+.feed video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#090b0d}
 .feed canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.feed-label{position:absolute;left:12px;top:12px;z-index:8;padding:6px 9px;border-radius:999px;background:rgba(5,7,9,.74);border:1px solid rgba(255,255,255,.13);font-size:10px}
-.challenge{position:absolute;right:12px;top:12px;z-index:8;min-width:180px;padding:10px 12px;border-radius:12px;background:rgba(5,7,9,.84);border:1px solid rgba(255,255,255,.13)}
-.challenge small{display:block;color:#9ca8b2;font-size:9px;letter-spacing:.12em}
-.challenge strong{display:block;margin-top:3px;font-size:18px}
-.notice{position:absolute;left:12px;bottom:12px;z-index:8;max-width:70%;padding:9px 11px;border-radius:11px;background:rgba(5,7,9,.76);font-size:11px;color:#c8d0d7;line-height:1.35}
+.feed-label{position:absolute;left:14px;top:14px;z-index:8;padding:6px 9px;border-radius:7px;background:rgba(13,16,19,.78);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:10px;font-weight:650}
+.challenge{position:absolute;right:14px;top:14px;z-index:8;max-width:290px;padding:11px 13px;border-radius:10px;background:rgba(13,16,19,.86);border:1px solid rgba(255,255,255,.16);color:#fff}
+.challenge small{display:block;color:#aeb6bd;font-size:9px;letter-spacing:.09em;text-transform:uppercase}
+.challenge strong{display:block;margin-top:4px;font-size:16px;line-height:1.3}
+.notice{position:absolute;left:14px;bottom:14px;z-index:8;max-width:74%;padding:9px 11px;border-radius:9px;background:rgba(13,16,19,.82);color:#e7eaed;font-size:12px;line-height:1.4}
 
-/* simulated feed */
-.sim-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.08),transparent 28%),linear-gradient(180deg,#252a30 0 61%,#15191d 61% 100%)}
-.grid{position:absolute;inset:0;opacity:.1;background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:48px 48px}
+/* Demo scene */
+.sim-bg{position:absolute;inset:0;background:#24292e}
+.grid{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:48px 48px}
 .person{position:absolute;left:44%;bottom:8%;width:220px;height:330px;transform:translateX(-50%)}
-.head{position:absolute;left:74px;top:0;width:78px;height:94px;border-radius:48% 48% 44% 44%;background:#c5cbd0}
-.neck{position:absolute;left:94px;top:83px;width:40px;height:35px;background:#aeb6bc}
-.torso{position:absolute;left:38px;top:110px;width:154px;height:190px;border-radius:72px 72px 28px 28px;background:#929ca4}
-.shoulder{position:absolute;left:31px;top:120px;width:170px;height:72px;border-radius:44px;background:#929ca4}
-.arm{position:absolute;right:-25px;top:135px;width:35px;height:150px;border-radius:30px;background:#aeb6bc;transform-origin:17px 15px;transition:transform .65s ease,top .65s ease,right .65s ease}
-.hand{position:absolute;right:-6px;bottom:-18px;width:42px;height:42px;border-radius:50%;background:#c5cbd0}
+.head{position:absolute;left:74px;top:0;width:78px;height:94px;border-radius:48% 48% 44% 44%;background:#c7ccd0}
+.neck{position:absolute;left:94px;top:83px;width:40px;height:35px;background:#adb5bb}
+.torso{position:absolute;left:38px;top:110px;width:154px;height:190px;border-radius:72px 72px 28px 28px;background:#89939b}
+.shoulder{position:absolute;left:31px;top:120px;width:170px;height:72px;border-radius:44px;background:#89939b}
+.arm{position:absolute;right:-25px;top:135px;width:35px;height:150px;border-radius:30px;background:#adb5bb;transform-origin:17px 15px;transition:transform .65s ease,top .65s ease,right .65s ease}
+.hand{position:absolute;right:-6px;bottom:-18px;width:42px;height:42px;border-radius:50%;background:#c7ccd0}
 .phone{position:absolute;right:-92px;top:186px;width:88px;height:150px;border-radius:17px;background:#0d1013;border:4px solid #d7dde1;box-shadow:0 10px 25px rgba(0,0,0,.35);transform:rotate(-3deg);transition:transform .65s ease,right .65s ease,top .65s ease}
-.phone-screen{position:absolute;inset:7px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#e8ecef,#b7c0c7)}
+.phone-screen{position:absolute;inset:7px;border-radius:10px;overflow:hidden;background:#d9dee2}
 .face-dot{position:absolute;left:50%;top:56%;width:32px;height:39px;border-radius:50%;background:#7f8991;transform:translate(-50%,-50%)}
 .qr-mini{position:absolute;left:7px;top:7px;width:34px;height:34px;background:linear-gradient(90deg,#111 25%,#fff 25% 50%,#111 50% 75%,#fff 75%),linear-gradient(#111 25%,#fff 25% 50%,#111 50% 75%,#fff 75%);background-size:8px 8px;border:3px solid #fff;box-shadow:0 0 0 1px #111}
-.sim[data-step="1"] .phone{top:140px;right:-40px} .sim[data-step="1"] .arm{transform:rotate(-36deg);top:112px;right:2px}
-.sim[data-step="2"] .phone{top:112px;right:40px} .sim[data-step="2"] .arm{transform:rotate(-62deg);top:94px;right:28px}
-.sim[data-step="3"] .phone{top:112px;right:4px;transform:translateX(70px) rotate(-3deg)} .sim[data-step="3"] .arm{transform:rotate(-55deg)}
+.sim[data-step="1"] .phone{top:140px;right:-40px}.sim[data-step="1"] .arm{transform:rotate(-36deg);top:112px;right:2px}
+.sim[data-step="2"] .phone{top:112px;right:40px}.sim[data-step="2"] .arm{transform:rotate(-62deg);top:94px;right:28px}
+.sim[data-step="3"] .phone{top:112px;right:4px;transform:translateX(70px) rotate(-3deg)}.sim[data-step="3"] .arm{transform:rotate(-55deg)}
 
-/* right side */
-.status-list{display:grid;gap:9px}
-.status{display:grid;grid-template-columns:1fr auto;gap:10px;padding:11px 12px;border-radius:11px;background:var(--panel2);border:1px solid #252d34}
-.status span{color:#abb5bd;font-size:13px} .status strong{font-size:12px}
-.status.ok{border-color:var(--ok)} .status.warn{border-color:var(--warn)} .status.bad{border-color:var(--bad)}
-.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
-.metric{padding:10px;border-radius:10px;background:#0d1115;border:1px solid #252d34}
-.metric small{display:block;color:#8d99a3;font-size:9px;letter-spacing:.08em} .metric strong{display:block;margin-top:4px;font-size:15px}
-.result{margin-top:12px;padding:18px;border-radius:14px;background:#0b0f13;border:1px solid #29323b;text-align:center}
-.result small{display:block;color:#8e9aa5;font-size:9px;letter-spacing:.13em} .result strong{display:block;margin-top:5px;font-size:30px}
-.result.pass{border-color:var(--ok)} .result.fail{border-color:var(--bad)}
-.log{margin-top:12px;height:180px;overflow:auto;padding:10px;border-radius:11px;background:#090c0f;border:1px solid #252d34;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#b8c2ca}
-.note{margin-top:10px;color:#84919c;font-size:11px;line-height:1.4}
+.status-list{display:grid;gap:8px}
+.status{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+.status span{color:#4f5962;font-size:13px}.status strong{font-size:12px;font-weight:650;color:#6a747d}
+.status.ok{border-color:#a9d2bb;background:#f7fbf8}.status.ok strong{color:var(--ok)}
+.status.warn{border-color:#dfcda8;background:#fffdf7}.status.warn strong{color:var(--warn)}
+.status.bad{border-color:#e1b5b5;background:#fff9f9}.status.bad strong{color:var(--bad)}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.metric{padding:10px;border-radius:9px;background:var(--surface2);border:1px solid var(--line)}
+.metric small{display:block;color:#7a848d;font-size:9px;letter-spacing:.07em}.metric strong{display:block;margin-top:4px;font-size:14px}
+.result{margin-top:12px;padding:17px;border-radius:10px;background:var(--surface2);border:1px solid var(--line);text-align:center}
+.result small{display:block;color:#7a848d;font-size:9px;letter-spacing:.09em;text-transform:uppercase}.result strong{display:block;margin-top:5px;font-size:23px}
+.result.pass{border-color:#a9d2bb;background:#f7fbf8}.result.pass strong{color:var(--ok)}
+.result.fail{border-color:#e1b5b5;background:#fff9f9}.result.fail strong{color:var(--bad)}
+.log{margin-top:12px;height:170px;overflow:auto;padding:10px;border-radius:9px;background:#111417;color:#c5ccd2;font:11px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.note{margin-top:11px;color:#7a848d;font-size:11px;line-height:1.45}
 
-/* landing */
 .entry{min-height:100vh;display:grid;place-items:center;padding:24px}
-.entry-card{width:min(980px,100%);padding:30px}
-.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#87949f}
-.entry h2{margin:7px 0 0;font-size:32px}
-.lead{color:#acb7c0;font-size:17px;line-height:1.55;max-width:800px}
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0}
-.step{padding:14px;border-radius:13px;background:#0e1216;border:1px solid #29323b}
-.step b{display:block;font-size:12px} .step span{display:block;margin-top:5px;color:#909da8;font-size:12px;line-height:1.4}
-.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
-.mode{text-align:left;padding:17px;border-radius:15px;border:1px solid #34404a;background:#171c21;color:#f3f5f7}
-.mode strong{display:block;font-size:16px} .mode span{display:block;margin-top:6px;color:#9ca8b2;font-size:12px;line-height:1.4}
-.foot{margin-top:16px;color:#788590;font-size:11px;line-height:1.45}
-@media(max-width:920px){.layout{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.feed{min-height:340px}}
-@media(max-width:600px){.shell{padding:10px}.topbar{align-items:flex-start;flex-direction:column}.entry{padding:12px}.entry-card{padding:20px}.entry h2{font-size:26px}.mode-grid{grid-template-columns:1fr}}
+.entry-card{width:min(760px,100%);padding:34px}
+.eyebrow{font-size:12px;font-weight:700;color:#59636c}
+.entry h1{margin:9px 0 0;font-size:32px;letter-spacing:-.02em}
+.lead{margin:12px 0 0;color:var(--muted);font-size:16px;line-height:1.55;max-width:620px}
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:28px}
+.mode{text-align:left;padding:17px;border-radius:12px;border:1px solid var(--line-strong);background:var(--surface);color:var(--text)}
+.mode:hover{background:var(--surface2);border-color:#aeb6bd}
+.mode strong{display:block;font-size:15px}.mode span{display:block;margin-top:6px;color:var(--muted);font-size:13px;line-height:1.4}
+.foot{margin-top:20px;color:#7a848d;font-size:12px;line-height:1.45}
+@media(max-width:920px){.layout{grid-template-columns:1fr}.feed{min-height:340px}}
+@media(max-width:620px){.shell{padding:10px}.topbar{align-items:flex-start;flex-direction:column}.entry{padding:12px}.entry-card{padding:24px}.entry h1{font-size:27px}.mode-grid{grid-template-columns:1fr}.challenge{max-width:210px}.notice{max-width:88%}}
 </style>
 </head>
 <body>
 
 <section id="entry" class="entry">
   <div class="card entry-card">
-    <div class="eyebrow">Profile B · Unified Interactive Prototype</div>
-    <h2>Одна точка входа</h2>
-    <p class="lead">
-      Выберите роль. Внутри Operator и Verifier можно использовать реальную веб-камеру
-      или Presentation Mode. Если доступ к камере запрещён или Camera API недоступен,
-      система автоматически переключится на simulated feed.
-    </p>
-
-    <div class="steps">
-      <div class="step"><b>1 · Operator</b><span>Ключевые статусы и итог PASS / FAIL без технических деталей.</span></div>
-      <div class="step"><b>2 · Verifier</b><span>Тот же поток + evidence, detection metrics и trace.</span></div>
-      <div class="step"><b>3 · Fallback</b><span>При отказе камеры включается явно маркированный Presentation Mode.</span></div>
-    </div>
+    <div class="eyebrow">ResearchSpace</div>
+    <h1>Выберите режим</h1>
+    <p class="lead">После выбора браузер запросит доступ к камере. Если камера недоступна, откроется демонстрационный сценарий.</p>
 
     <div class="mode-grid">
-      <button class="mode" data-mode="operator"><strong>Operator</strong><span>Открыть интерфейс сотрудника.</span></button>
-      <button class="mode" data-mode="verifier"><strong>Verifier</strong><span>Открыть технический режим проверки.</span></button>
+      <button class="mode" data-mode="operator">
+        <strong>Оператор</strong>
+        <span>Основные шаги и результат проверки.</span>
+      </button>
+      <button class="mode" data-mode="verifier">
+        <strong>Проверка</strong>
+        <span>Технические статусы и журнал событий.</span>
+      </button>
     </div>
 
-    <div class="foot">
-      Прямые ссылки: <code>#operator</code> и <code>#verifier</code>.
-      Для Live Camera страницу лучше отдавать через HTTPS.
-    </div>
+    <div class="foot">Для работы камеры потребуется разрешение браузера.</div>
   </div>
 </section>
 
 <main id="app" class="shell hidden">
   <header class="topbar">
     <div>
-      <h1>Profile B — Unified Prototype</h1>
-      <p>Live CV when available · Presentation fallback otherwise</p>
+      <div class="brand"><span class="brand-mark">R</span><span>ResearchSpace</span></div>
+      <p id="pageSubtitle">Проверка с помощью камеры</p>
     </div>
     <div class="controls">
-      <span id="modePill" class="pill">OPERATOR</span>
-      <button id="homeBtn" class="btn ghost">Главная</button>
+      <span id="modePill" class="pill">ОПЕРАТОР</span>
+      <button id="homeBtn" class="btn ghost">Выйти</button>
     </div>
   </header>
 
   <div class="layout">
     <section class="panel">
       <div class="panel-head">
-        <strong>Verification feed</strong>
-        <div class="controls">
-          <button id="liveBtn" class="btn primary">Live Camera</button>
-          <button id="simBtn" class="btn">Presentation Mode</button>
-          <button id="challengeBtn" class="btn">New challenge</button>
+        <strong>Камера</strong>
+        <div class="controls verifier-only">
+          <button id="liveBtn" class="btn primary">Повторить доступ</button>
+          <button id="simBtn" class="btn">Демо</button>
+          <button id="challengeBtn" class="btn">Новая команда</button>
         </div>
       </div>
 
@@ -147,7 +141,7 @@ button{cursor:pointer}
         <video id="video" class="hidden" autoplay muted playsinline></video>
         <canvas id="overlay" class="hidden"></canvas>
 
-        <div id="simFeed" class="sim" data-step="0">
+        <div id="simFeed" class="sim hidden" data-step="0">
           <div class="sim-bg"></div>
           <div class="grid"></div>
           <div class="person">
@@ -165,25 +159,25 @@ button{cursor:pointer}
           </div>
         </div>
 
-        <div id="feedLabel" class="feed-label">PRESENTATION MODE · SIMULATED FEED</div>
-        <div class="challenge"><small>CURRENT CHALLENGE</small><strong id="challengeText">MOVE RIGHT →</strong></div>
-        <div id="notice" class="notice">Presentation Mode: статусы синхронизированы сценарием, а не реальным CV.</div>
+        <div id="feedLabel" class="feed-label">ПОДКЛЮЧЕНИЕ К КАМЕРЕ</div>
+        <div class="challenge"><small>Что сделать</small><strong id="challengeText">Покажите телефон в кадре</strong></div>
+        <div id="notice" class="notice">Разрешите доступ к камере в окне браузера.</div>
       </div>
     </section>
 
     <aside class="panel">
       <div class="panel-head">
-        <strong id="rightTitle">Operator status</strong>
-        <span id="sourcePill" class="pill">SIMULATED</span>
+        <strong id="rightTitle">Статус</strong>
+        <span id="sourcePill" class="pill">ОЖИДАНИЕ</span>
       </div>
       <div class="panel-body">
         <div class="status-list">
-          <div class="status" id="stCamera"><span>Camera / feed</span><strong>simulated</strong></div>
-          <div class="status" id="stPhone"><span>Phone screen detected</span><strong>waiting</strong></div>
-          <div class="status" id="stQr"><span>QR detected</span><strong>waiting</strong></div>
-          <div class="status" id="stFace"><span>Face detected</span><strong>waiting</strong></div>
-          <div class="status" id="stChallenge"><span>Challenge response</span><strong>waiting</strong></div>
-          <div class="status verifier-only" id="stConsistency"><span>Cross-signal consistency</span><strong>waiting</strong></div>
+          <div class="status" id="stCamera"><span>Камера</span><strong>ожидание</strong></div>
+          <div class="status" id="stPhone"><span>Телефон</span><strong>ожидание</strong></div>
+          <div class="status" id="stQr"><span>Код на экране</span><strong>ожидание</strong></div>
+          <div class="status" id="stFace"><span>Лицо</span><strong>ожидание</strong></div>
+          <div class="status" id="stChallenge"><span>Движение</span><strong>ожидание</strong></div>
+          <div class="status verifier-only" id="stConsistency"><span>Согласованность</span><strong>ожидание</strong></div>
         </div>
 
         <div class="metrics verifier-only">
@@ -193,13 +187,10 @@ button{cursor:pointer}
           <div class="metric"><small>MOTION ΔX</small><strong id="mMotion">—</strong></div>
         </div>
 
-        <div id="result" class="result"><small>VERIFICATION</small><strong id="resultText">WAITING</strong></div>
-        <div id="log" class="log verifier-only"><div>00:00.000 · verifier idle</div></div>
+        <div id="result" class="result"><small>Результат</small><strong id="resultText">Ожидание</strong></div>
+        <div id="log" class="log verifier-only"><div>00:00.000 · ready</div></div>
 
-        <div class="note">
-          Live Camera — реальный webcam поток через <code>getUserMedia()</code>.
-          Presentation Mode — fallback для показа UX/логики, если доступ к камере не разрешён.
-        </div>
+        <div id="technicalNote" class="note verifier-only">Демонстрационный режим используется только когда камера недоступна или выбран вручную.</div>
       </div>
     </aside>
   </div>
@@ -244,7 +235,7 @@ button{cursor:pointer}
   };
 
   let mode = 'operator';
-  let source = 'sim';
+  let source = 'idle';
   let stream = null;
   let barcodeDetector = null;
   let faceDetector = null;
@@ -254,7 +245,7 @@ button{cursor:pointer}
   let simTimers = [];
   let t0 = performance.now();
 
-  const EXPECTED_QR = "PROFILE-B-DEMO|STATIC-QR|V1";
+  const EXPECTED_QR = 'PROFILE-B-DEMO|STATIC-QR|V1';
 
   function setStatus(key, cls, text) {
     const el = statuses[key];
@@ -283,7 +274,7 @@ button{cursor:pointer}
   function stopCamera() {
     running = false;
     if (stream) {
-      stream.getTracks().forEach(t => { try { t.stop(); } catch (_) {} });
+      stream.getTracks().forEach(track => { try { track.stop(); } catch (_) {} });
       stream = null;
     }
     video.srcObject = null;
@@ -291,20 +282,20 @@ button{cursor:pointer}
 
   function resetResult() {
     result.classList.remove('pass','fail');
-    resultText.textContent = 'WAITING';
-    setStatus('phone','','waiting');
-    setStatus('qr','','waiting');
-    setStatus('face','','waiting');
-    setStatus('challenge','','waiting');
-    setStatus('consistency','','waiting');
+    resultText.textContent = 'Ожидание';
+    setStatus('phone','','ожидание');
+    setStatus('qr','','ожидание');
+    setStatus('face','','ожидание');
+    setStatus('challenge','','ожидание');
+    setStatus('consistency','','ожидание');
     Object.values(metrics).forEach(el => el.textContent = '—');
   }
 
   function chooseChallenge() {
     const options = [
-      {id:'right',label:'MOVE RIGHT →'},
-      {id:'left',label:'← MOVE LEFT'},
-      {id:'closer',label:'MOVE CLOSER'}
+      {id:'right',label:'Переместите телефон вправо'},
+      {id:'left',label:'Переместите телефон влево'},
+      {id:'closer',label:'Поднесите телефон ближе'}
     ];
     challenge = options[Math.floor(Math.random()*options.length)];
     challengeText.textContent = challenge.label;
@@ -313,52 +304,61 @@ button{cursor:pointer}
     addLog(`challenge=${challenge.id}`);
   }
 
-  function setMode(next) {
+  function applyMode(next) {
     mode = next === 'verifier' ? 'verifier' : 'operator';
     location.hash = mode;
     entry.classList.add('hidden');
     app.classList.remove('hidden');
-    modePill.textContent = mode.toUpperCase();
-    rightTitle.textContent = mode === 'verifier' ? 'Verifier evidence' : 'Operator status';
+    modePill.textContent = mode === 'verifier' ? 'ПРОВЕРКА' : 'ОПЕРАТОР';
+    rightTitle.textContent = mode === 'verifier' ? 'Технические статусы' : 'Статус';
     document.querySelectorAll('.verifier-only').forEach(el => el.classList.toggle('hidden', mode !== 'verifier'));
     if (!challenge) chooseChallenge();
   }
 
+  async function enterMode(next) {
+    applyMode(next);
+    await startLive();
+  }
+
   document.querySelectorAll('[data-mode]').forEach(btn => {
-    btn.addEventListener('click', () => setMode(btn.dataset.mode));
+    btn.addEventListener('click', () => { void enterMode(btn.dataset.mode); });
   });
 
   document.getElementById('homeBtn').addEventListener('click', () => {
     stopCamera();
     clearSimTimers();
+    source = 'idle';
     app.classList.add('hidden');
     entry.classList.remove('hidden');
     history.replaceState(null,'',location.pathname + location.search);
   });
 
-  function setSource(next) {
-    source = next;
-    liveBtn.classList.toggle('active', source === 'live');
-    simBtn.classList.toggle('active', source === 'sim');
+  function showLive() {
+    source = 'live';
+    clearSimTimers();
+    simFeed.classList.add('hidden');
+    video.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+    liveBtn.classList.add('active');
+    simBtn.classList.remove('active');
+    feedLabel.textContent = 'КАМЕРА';
+    sourcePill.textContent = 'LIVE';
+    notice.textContent = 'Расположите лицо и экран телефона в кадре.';
+  }
 
-    if (source === 'live') {
-      simFeed.classList.add('hidden');
-      video.classList.remove('hidden');
-      overlay.classList.remove('hidden');
-      feedLabel.textContent = 'LIVE CAMERA';
-      sourcePill.textContent = 'LIVE';
-      notice.textContent = 'Live Camera: реальный webcam поток. Доступность QR/Face detector зависит от браузера.';
-    } else {
-      stopCamera();
-      video.classList.add('hidden');
-      overlay.classList.add('hidden');
-      simFeed.classList.remove('hidden');
-      feedLabel.textContent = 'PRESENTATION MODE · SIMULATED FEED';
-      sourcePill.textContent = 'SIMULATED';
-      notice.textContent = 'Presentation Mode: статусы синхронизированы сценарием, а не реальным CV.';
-      setStatus('camera','warn','simulated');
-      runPresentation();
-    }
+  function showDemo(reason = 'Камера недоступна. Показан демонстрационный сценарий.') {
+    source = 'sim';
+    stopCamera();
+    video.classList.add('hidden');
+    overlay.classList.add('hidden');
+    simFeed.classList.remove('hidden');
+    liveBtn.classList.remove('active');
+    simBtn.classList.add('active');
+    feedLabel.textContent = 'ДЕМОНСТРАЦИЯ';
+    sourcePill.textContent = 'ДЕМО';
+    notice.textContent = reason;
+    setStatus('camera','warn','демо');
+    runPresentation();
   }
 
   async function requestCamera() {
@@ -367,8 +367,8 @@ button{cursor:pointer}
       {audio:false,video:true}
     ];
     let last = null;
-    for (const c of attempts) {
-      try { return await navigator.mediaDevices.getUserMedia(c); }
+    for (const constraints of attempts) {
+      try { return await navigator.mediaDevices.getUserMedia(constraints); }
       catch (e) {
         last = e;
         if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e;
@@ -379,27 +379,33 @@ button{cursor:pointer}
 
   async function startLive() {
     clearSimTimers();
+    stopCamera();
     resetResult();
+    source = 'idle';
+    simFeed.classList.add('hidden');
+    video.classList.add('hidden');
+    overlay.classList.add('hidden');
+    feedLabel.textContent = 'ПОДКЛЮЧЕНИЕ К КАМЕРЕ';
+    sourcePill.textContent = 'ОЖИДАНИЕ';
+    notice.textContent = 'Разрешите доступ к камере в окне браузера.';
+    setStatus('camera','warn','запрос доступа');
+    t0 = performance.now();
+    log.innerHTML = '';
+    addLog('camera permission requested');
 
     if (!navigator.mediaDevices?.getUserMedia) {
-      addLog('Camera API unavailable → fallback to Presentation Mode');
-      setSource('sim');
+      addLog('Camera API unavailable');
+      showDemo('Камера не поддерживается этим браузером. Показан демонстрационный сценарий.');
       return;
     }
 
     try {
-      stopCamera();
-      source = 'live';
-      setSource('live');
-      setStatus('camera','warn','requesting');
-      t0 = performance.now();
-      log.innerHTML = '';
-
       stream = await requestCamera();
+      showLive();
       video.srcObject = stream;
       await video.play();
-      setStatus('camera','ok','live');
-      addLog('webcam started');
+      setStatus('camera','ok','подключена');
+      addLog('camera started');
 
       if ('BarcodeDetector' in window) {
         try { barcodeDetector = new BarcodeDetector({formats:['qr_code']}); }
@@ -407,25 +413,28 @@ button{cursor:pointer}
         addLog('BarcodeDetector enabled');
       } else {
         barcodeDetector = null;
-        setStatus('qr','warn','unsupported');
+        setStatus('qr','warn','не поддерживается');
         addLog('BarcodeDetector unavailable');
       }
 
       if ('FaceDetector' in window) {
         try { faceDetector = new FaceDetector({fastMode:true,maxDetectedFaces:4}); }
         catch (_) { faceDetector = null; }
-        addLog(faceDetector ? 'FaceDetector enabled' : 'FaceDetector init failed');
+        if (!faceDetector) setStatus('face','warn','не поддерживается');
+        addLog(faceDetector ? 'FaceDetector enabled' : 'FaceDetector unavailable');
       } else {
         faceDetector = null;
-        setStatus('face','warn','unsupported');
+        setStatus('face','warn','не поддерживается');
         addLog('FaceDetector unavailable');
       }
 
       running = true;
     } catch (e) {
-      addLog(`camera denied/unavailable: ${e.name || e}`);
-      notice.textContent = `Camera недоступна (${e.name || 'error'}). Автоматически включён Presentation Mode.`;
-      setSource('sim');
+      addLog(`camera unavailable: ${e.name || e}`);
+      const denied = e && (e.name === 'NotAllowedError' || e.name === 'SecurityError');
+      showDemo(denied
+        ? 'Доступ к камере не разрешён. Показан демонстрационный сценарий.'
+        : 'Не удалось подключить камеру. Показан демонстрационный сценарий.');
     }
   }
 
@@ -435,39 +444,39 @@ button{cursor:pointer}
     simFeed.dataset.step = '0';
     t0 = performance.now();
     log.innerHTML = '';
-    addLog('presentation scenario started');
+    addLog('demo started');
 
     later(450, () => {
       simFeed.dataset.step = '1';
-      setStatus('phone','warn','detecting');
-      addLog('phone candidate enters frame');
+      setStatus('phone','warn','поиск');
+      addLog('phone enters frame');
     });
     later(1000, () => {
       simFeed.dataset.step = '2';
-      setStatus('phone','ok','detected');
+      setStatus('phone','ok','найден');
       metrics.phone.textContent = '0.99';
-      addLog('phone screen detected conf=0.99');
+      addLog('phone detected conf=0.99');
     });
     later(1450, () => {
-      setStatus('qr','ok','valid');
+      setStatus('qr','ok','прочитан');
       metrics.qr.textContent = 'valid';
       addLog('QR recognized');
     });
     later(1850, () => {
-      setStatus('face','ok','detected');
+      setStatus('face','ok','найдено');
       metrics.face.textContent = '0.97';
-      addLog('face detected on phone screen');
+      addLog('face detected');
     });
     later(2350, () => {
       simFeed.dataset.step = '3';
-      setStatus('challenge','ok','passed');
+      setStatus('challenge','ok','выполнено');
       metrics.motion.textContent = '+84 px';
       addLog('motion matched challenge');
     });
     later(2850, () => {
-      setStatus('consistency','ok','consistent');
+      setStatus('consistency','ok','норма');
       result.classList.add('pass');
-      resultText.textContent = 'PASS';
+      resultText.textContent = 'Проверка пройдена';
       addLog('FINAL PASS');
     });
   }
@@ -482,7 +491,7 @@ button{cursor:pointer}
 
     if (!baseline) {
       baseline = {...m};
-      setStatus('challenge','warn','move phone');
+      setStatus('challenge','warn','выполните команду');
       return;
     }
 
@@ -496,10 +505,10 @@ button{cursor:pointer}
     if (challenge.id === 'closer') pass = ratio > 1.45;
 
     if (pass) {
-      setStatus('challenge','ok','passed');
-      setStatus('consistency','ok','consistent');
+      setStatus('challenge','ok','выполнено');
+      setStatus('consistency','ok','норма');
       result.classList.add('pass');
-      resultText.textContent = 'PASS';
+      resultText.textContent = 'Проверка пройдена';
       addLog(`challenge passed dx=${Math.round(dx)} ratio=${ratio.toFixed(2)}`);
     }
   }
@@ -515,50 +524,50 @@ button{cursor:pointer}
       if (barcodeDetector) {
         try {
           const codes = await barcodeDetector.detect(video);
-          const code = codes.find(c => c.rawValue === EXPECTED_QR);
+          const code = codes.find(item => item.rawValue === EXPECTED_QR);
           if (code) {
             const m = boxMetrics(code.boundingBox);
-            setStatus('qr','ok','recognized');
-            setStatus('phone','ok','phone/QR seen');
+            setStatus('qr','ok','прочитан');
+            setStatus('phone','ok','найден');
             metrics.phone.textContent = 'detected';
             metrics.qr.textContent = 'valid';
-
-            ctx.strokeStyle = '#fff';
+            ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 4;
             ctx.strokeRect(m.box.x,m.box.y,m.box.width,m.box.height);
             checkChallenge(m);
           } else {
-            setStatus('qr','warn','searching');
+            setStatus('qr','warn','поиск');
           }
         } catch (_) {
-          setStatus('qr','warn','scan error');
+          setStatus('qr','warn','ошибка чтения');
         }
       }
 
       if (faceDetector) {
         try {
           const faces = await faceDetector.detect(video);
-          setStatus('face',faces.length?'ok':'warn',faces.length?`${faces.length} detected`:'searching');
+          setStatus('face',faces.length?'ok':'warn',faces.length?'найдено':'поиск');
           metrics.face.textContent = String(faces.length);
         } catch (_) {
-          setStatus('face','warn','scan error');
+          setStatus('face','warn','ошибка проверки');
         }
       }
     }
     requestAnimationFrame(frameLoop);
   }
 
-  liveBtn.addEventListener('click', startLive);
-  simBtn.addEventListener('click', () => setSource('sim'));
+  liveBtn.addEventListener('click', () => { void startLive(); });
+  simBtn.addEventListener('click', () => showDemo('Показан демонстрационный сценарий.'));
   document.getElementById('challengeBtn').addEventListener('click', () => {
     chooseChallenge();
     if (source === 'sim') runPresentation();
   });
 
   const initial = location.hash.replace('#','');
-  if (initial === 'operator' || initial === 'verifier') setMode(initial);
+  if (initial === 'operator' || initial === 'verifier') {
+    void enterMode(initial);
+  }
 
-  setSource('sim');
   requestAnimationFrame(frameLoop);
 })();
 </script>
