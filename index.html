@@ -7,9 +7,9 @@
 <title>ResearchSpace — Camera verification</title>
 <style>
 :root{
-  color-scheme:light;
-  --bg:#f5f6f8;--surface:#fff;--surface2:#f8f9fa;--text:#17191c;--muted:#66707a;
-  --line:#e0e4e8;--line-strong:#cbd1d7;--ok:#237a4b;--warn:#9a6a16;--bad:#b43c3c;
+color-scheme:light;
+--bg:#f5f6f8;--surface:#fff;--surface2:#f8f9fa;--text:#17191c;--muted:#66707a;
+--line:#e0e4e8;--line-strong:#cbd1d7;--ok:#237a4b;--warn:#9a6a16;--bad:#b43c3c;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -38,11 +38,7 @@ button{font:inherit;cursor:pointer}
 .feed video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#090b0d}
 .feed canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .feed-label{position:absolute;left:14px;top:14px;z-index:8;padding:6px 9px;border-radius:7px;background:rgba(13,16,19,.78);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:10px;font-weight:650}
-.challenge{position:absolute;right:14px;top:14px;z-index:8;max-width:290px;padding:11px 13px;border-radius:10px;background:rgba(13,16,19,.86);border:1px solid rgba(255,255,255,.16);color:#fff}
-.challenge small{display:block;color:#aeb6bd;font-size:9px;letter-spacing:.09em;text-transform:uppercase}
-.challenge strong{display:block;margin-top:4px;font-size:16px;line-height:1.3}
 .notice{position:absolute;left:14px;bottom:14px;z-index:8;max-width:74%;padding:9px 11px;border-radius:9px;background:rgba(13,16,19,.82);color:#e7eaed;font-size:12px;line-height:1.4}
-
 .sim-bg{position:absolute;inset:0;background:#24292e}
 .grid{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(rgba(255,255,255,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.2) 1px,transparent 1px);background-size:48px 48px}
 .person{position:absolute;left:44%;bottom:8%;width:220px;height:330px;transform:translateX(-50%)}
@@ -58,8 +54,6 @@ button{font:inherit;cursor:pointer}
 .qr-mini{position:absolute;right:7px;bottom:7px;width:34px;height:34px;background:linear-gradient(90deg,#111 25%,#fff 25% 50%,#111 50% 75%,#fff 75%),linear-gradient(#111 25%,#fff 25% 50%,#111 50% 75%,#fff 75%);background-size:8px 8px;border:3px solid #fff;box-shadow:0 0 0 1px #111}
 .sim[data-step="1"] .phone{top:140px;right:-40px}.sim[data-step="1"] .arm{transform:rotate(-36deg);top:112px;right:2px}
 .sim[data-step="2"] .phone{top:112px;right:40px}.sim[data-step="2"] .arm{transform:rotate(-62deg);top:94px;right:28px}
-.sim[data-step="3"] .phone{top:112px;right:4px;transform:translateX(70px) rotate(-3deg)}.sim[data-step="3"] .arm{transform:rotate(-55deg)}
-
 .status-list{display:grid;gap:8px}
 .status{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
 .status span{color:#4f5962;font-size:13px}.status strong{font-size:12px;font-weight:650;color:#6a747d}
@@ -75,7 +69,6 @@ button{font:inherit;cursor:pointer}
 .result.fail{border-color:#e1b5b5;background:#fff9f9}.result.fail strong{color:var(--bad)}
 .log{margin-top:12px;height:170px;overflow:auto;padding:10px;border-radius:9px;background:#111417;color:#c5ccd2;font:11px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .note{margin-top:11px;color:#7a848d;font-size:11px;line-height:1.45}
-
 .entry{min-height:100vh;display:grid;place-items:center;padding:24px}
 .entry-card{width:min(760px,100%);padding:34px}
 .eyebrow{font-size:12px;font-weight:700;color:#59636c}
@@ -89,575 +82,456 @@ button{font:inherit;cursor:pointer}
 .mode.recommended{border-color:var(--text);box-shadow:0 0 0 1px var(--text);background:#fafafa}
 .foot{display:grid;gap:5px;margin-top:20px;color:#7a848d;font-size:12px;line-height:1.45}
 @media(max-width:920px){
-  .layout{grid-template-columns:1fr}
-  .feed{min-height:340px}
+.layout{grid-template-columns:1fr}
+.feed{min-height:340px}
 }
 @media(max-width:620px){
-  body{background:var(--surface)}
-  .shell{padding:10px 10px calc(18px + env(safe-area-inset-bottom));max-width:none}
-  .card,.panel{border-radius:12px}
-
-  .entry{min-height:100dvh;place-items:start stretch;padding:max(16px,env(safe-area-inset-top)) 14px max(20px,env(safe-area-inset-bottom))}
-  .entry-card{width:100%;padding:22px 18px;border:none;border-radius:0}
-  .entry h1{font-size:27px;line-height:1.12}
-  .instructions{margin-top:14px;padding-left:20px;font-size:14px;line-height:1.55}
-  .mode-grid{grid-template-columns:1fr;gap:10px;margin-top:20px}
-  .mode{min-height:64px;padding:16px 17px;gap:14px}
-  .mode strong{font-size:16px}
-  .mode-icon{width:28px;height:28px;flex-basis:28px}
-  .foot{margin-top:17px;font-size:11px;line-height:1.45}
-
-  .topbar{margin-bottom:10px;gap:10px;align-items:center;flex-direction:row}
-  .topbar>div:first-child{min-width:0;flex:1}
-  .brand{font-size:14px}
-  .brand-mark{width:22px;height:22px}
-  .topbar p{display:none}
-  .topbar>.controls{flex:0 0 auto;gap:4px}
-  .topbar .pill{max-width:126px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;padding:5px 7px}
-  .topbar .btn{padding:7px 8px;font-size:12px}
-
-  .layout{gap:10px}
-  .panel-head{min-height:48px;padding:10px 11px}
-  .panel-head>.controls{width:auto}
-  .panel-head>.controls .btn{padding:8px 9px;font-size:11px}
-  .panel-body{padding:11px}
-
-  .feed{aspect-ratio:auto;height:min(61dvh,520px);min-height:390px}
-  .feed-label{left:10px;top:10px;font-size:9px;padding:5px 7px}
-  .challenge{left:10px;right:10px;top:48px;max-width:none;padding:9px 11px}
-  .challenge strong{font-size:15px}
-  .notice{left:10px;right:10px;bottom:10px;max-width:none;padding:8px 10px;font-size:11px}
-
-  .person{left:44%;bottom:6%;transform:translateX(-50%) scale(.82);transform-origin:bottom center}
-  .status-list{gap:7px}
-  .status{padding:10px}
-  .metrics{gap:7px}
-  .result{margin-top:10px;padding:14px}
-  .result strong{font-size:21px}
-  .log{height:145px}
+body{background:var(--surface)}
+.shell{padding:10px 10px calc(18px + env(safe-area-inset-bottom));max-width:none}
+.card,.panel{border-radius:12px}
+.entry{min-height:100dvh;place-items:start stretch;padding:max(16px,env(safe-area-inset-top)) 14px max(20px,env(safe-area-inset-bottom))}
+.entry-card{width:100%;padding:22px 18px;border:none;border-radius:0}
+.entry h1{font-size:27px;line-height:1.12}
+.instructions{margin-top:14px;padding-left:20px;font-size:14px;line-height:1.55}
+.mode-grid{grid-template-columns:1fr;gap:10px;margin-top:20px}
+.mode{min-height:64px;padding:16px 17px;gap:14px}
+.mode strong{font-size:16px}
+.mode-icon{width:28px;height:28px;flex-basis:28px}
+.foot{margin-top:17px;font-size:11px;line-height:1.45}
+.topbar{margin-bottom:10px;gap:10px;align-items:center;flex-direction:row}
+.topbar>div:first-child{min-width:0;flex:1}
+.brand{font-size:14px}
+.brand-mark{width:22px;height:22px}
+.topbar p{display:none}
+.topbar>.controls{flex:0 0 auto;gap:4px}
+.topbar .pill{max-width:126px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;padding:5px 7px}
+.topbar .btn{padding:7px 8px;font-size:12px}
+.layout{gap:10px}
+.panel-head{min-height:48px;padding:10px 11px}
+.panel-head>.controls{width:auto}
+.panel-head>.controls .btn{padding:8px 9px;font-size:11px}
+.panel-body{padding:11px}
+.feed{aspect-ratio:auto;height:min(61dvh,520px);min-height:390px}
+.feed-label{left:10px;top:10px;font-size:9px;padding:5px 7px}
+.notice{left:10px;right:10px;bottom:10px;max-width:none;padding:8px 10px;font-size:11px}
+.person{left:44%;bottom:6%;transform:translateX(-50%) scale(.82);transform-origin:bottom center}
+.status-list{gap:7px}
+.status{padding:10px}
+.metrics{gap:7px}
+.result{margin-top:10px;padding:14px}
+.result strong{font-size:21px}
+.log{height:145px}
 }
 @media(max-width:380px){
-  .entry{padding-left:10px;padding-right:10px}
-  .entry-card{padding-left:12px;padding-right:12px}
-  .feed{height:58dvh;min-height:360px}
-  .mode{min-height:60px;padding:14px}
-  .challenge strong{font-size:14px}
-  .topbar .pill{max-width:106px}
+.entry{padding-left:10px;padding-right:10px}
+.entry-card{padding-left:12px;padding-right:12px}
+.feed{height:58dvh;min-height:360px}
+.mode{min-height:60px;padding:14px}
+.topbar .pill{max-width:106px}
 }
 </style>
 </head>
 <body>
-
 <section id="entry" class="entry">
-  <div class="card entry-card">
-    <div class="eyebrow">ResearchSpace</div>
-    <h1>Инструкция</h1>
-    <ol class="instructions">
-      <li>Откройте «Веб-камера ПК».</li>
-      <li>Разрешите доступ к камере или продолжите без него.</li>
-      <li>Откройте «Телефон» и ознакомьтесь со второй частью сценария.</li>
-    </ol>
-
-    <div class="mode-grid">
-      <button class="mode" data-mode="operator">
-        <svg class="mode-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="3" y="4" width="18" height="12" rx="2"></rect>
-          <path d="M8 20h8"></path>
-          <path d="M12 16v4"></path>
-          <circle cx="12" cy="10" r="2.2"></circle>
-        </svg>
-        <strong>Веб-камера ПК</strong>
-      </button>
-      <button class="mode" data-mode="verifier">
-        <svg class="mode-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="7" y="2.5" width="10" height="19" rx="2.2"></rect>
-          <path d="M10.5 5h3"></path>
-          <circle cx="12" cy="18.2" r=".7"></circle>
-        </svg>
-        <strong>Телефон</strong>
-      </button>
-    </div>
-
-    <div class="foot">
-      <span>Доступ к камере можно не предоставлять, тогда включится демонстрационный сценарий.</span>
-      <span>Все вычисления выполняются локально в браузере. Данные не отправляются на сервер.</span>
-    </div>
-  </div>
+<div class="card entry-card">
+<div class="eyebrow">ResearchSpace</div>
+<h1>Инструкция</h1>
+<ol class="instructions">
+<li>Откройте «Веб-камера ПК».</li>
+<li>Разрешите доступ к камере или продолжите без него.</li>
+<li>Откройте «Телефон» и ознакомьтесь со второй частью сценария.</li>
+</ol>
+<div class="mode-grid">
+<button class="mode" data-mode="operator">
+<svg class="mode-icon" viewBox="0 0 24 24" aria-hidden="true">
+<rect x="3" y="4" width="18" height="12" rx="2"></rect>
+<path d="M8 20h8"></path>
+<path d="M12 16v4"></path>
+<circle cx="12" cy="10" r="2.2"></circle>
+</svg>
+<strong>Веб-камера ПК</strong>
+</button>
+<button class="mode" data-mode="verifier">
+<svg class="mode-icon" viewBox="0 0 24 24" aria-hidden="true">
+<rect x="7" y="2.5" width="10" height="19" rx="2.2"></rect>
+<path d="M10.5 5h3"></path>
+<circle cx="12" cy="18.2" r=".7"></circle>
+</svg>
+<strong>Телефон</strong>
+</button>
+</div>
+<div class="foot">
+<span>Доступ к камере можно не предоставлять, тогда включится демонстрационный сценарий.</span>
+<span>Все вычисления выполняются локально в браузере. Данные не отправляются на сервер.</span>
+</div>
+</div>
 </section>
-
 <main id="app" class="shell hidden">
-  <header class="topbar">
-    <div>
-      <div class="brand"><span class="brand-mark">R</span><span>ResearchSpace</span></div>
-      <p id="pageSubtitle">Проверка с помощью камеры</p>
-    </div>
-    <div class="controls">
-      <span id="modePill" class="pill">ВЕБ-КАМЕРА ПК</span>
-      <button id="homeBtn" class="btn ghost">Выйти</button>
-    </div>
-  </header>
-
-  <div class="layout">
-    <section class="panel">
-      <div class="panel-head">
-        <strong>Камера</strong>
-        <div class="controls verifier-only">
-          <button id="liveBtn" class="btn primary">Повторить доступ</button>
-          <button id="simBtn" class="btn">Демо</button>
-          <button id="challengeBtn" class="btn">Новая команда</button>
-        </div>
-      </div>
-
-      <div id="feed" class="feed">
-        <video id="video" class="hidden" autoplay muted playsinline></video>
-        <canvas id="overlay" class="hidden"></canvas>
-
-        <div id="simFeed" class="sim hidden" data-step="0">
-          <div class="sim-bg"></div>
-          <div class="grid"></div>
-          <div class="person">
-            <div class="head"></div>
-            <div class="neck"></div>
-            <div class="shoulder"></div>
-            <div class="torso"></div>
-            <div class="arm"><div class="hand"></div></div>
-            <div class="phone">
-              <div class="phone-screen">
-                <div class="qr-mini"></div>
-                <div class="face-dot"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="feedLabel" class="feed-label">ПОДКЛЮЧЕНИЕ К КАМЕРЕ</div>
-        <div class="challenge"><small>Что сделать</small><strong id="challengeText">Покажите телефон в кадре</strong></div>
-        <div id="notice" class="notice">Разрешите доступ к камере в окне браузера.</div>
-      </div>
-    </section>
-
-    <aside class="panel">
-      <div class="panel-head">
-        <strong id="rightTitle">Статус</strong>
-        <span id="sourcePill" class="pill">ОЖИДАНИЕ</span>
-      </div>
-      <div class="panel-body">
-        <div class="status-list">
-          <div class="status" id="stCamera"><span>Камера</span><strong>ожидание</strong></div>
-          <div class="status" id="stPhone"><span>Телефон</span><strong>ожидание</strong></div>
-          <div class="status" id="stQr"><span>Код на экране</span><strong>ожидание</strong></div>
-          <div class="status" id="stFace"><span>Лицо</span><strong>ожидание</strong></div>
-          <div class="status" id="stChallenge"><span>Движение</span><strong>ожидание</strong></div>
-          <div class="status verifier-only" id="stConsistency"><span>Согласованность</span><strong>ожидание</strong></div>
-        </div>
-
-        <div class="metrics verifier-only">
-          <div class="metric"><small>PHONE CONF.</small><strong id="mPhone">—</strong></div>
-          <div class="metric"><small>FACE CONF.</small><strong id="mFace">—</strong></div>
-          <div class="metric"><small>QR STATE</small><strong id="mQr">—</strong></div>
-          <div class="metric"><small>MOTION ΔX</small><strong id="mMotion">—</strong></div>
-        </div>
-
-        <div id="result" class="result"><small>Результат</small><strong id="resultText">Ожидание</strong></div>
-        <div id="log" class="log verifier-only"><div>00:00.000 · ready</div></div>
-
-        <div id="technicalNote" class="note verifier-only">Демонстрационный режим используется только когда камера недоступна или выбран вручную.</div>
-      </div>
-    </aside>
-  </div>
+<header class="topbar">
+<div>
+<div class="brand"><span class="brand-mark">R</span><span>ResearchSpace</span></div>
+<p id="pageSubtitle">Проверка с помощью камеры</p>
+</div>
+<div class="controls">
+<span id="modePill" class="pill">ВЕБ-КАМЕРА ПК</span>
+<button id="homeBtn" class="btn ghost">Выйти</button>
+</div>
+</header>
+<div class="layout">
+<section class="panel">
+<div class="panel-head">
+<strong>Камера</strong>
+<div class="controls verifier-only">
+<button id="liveBtn" class="btn primary">Повторить доступ</button>
+<button id="simBtn" class="btn">Демо</button>
+</div>
+</div>
+<div id="feed" class="feed">
+<video id="video" class="hidden" autoplay muted playsinline></video>
+<canvas id="overlay" class="hidden"></canvas>
+<div id="simFeed" class="sim hidden" data-step="0">
+<div class="sim-bg"></div>
+<div class="grid"></div>
+<div class="person">
+<div class="head"></div>
+<div class="neck"></div>
+<div class="shoulder"></div>
+<div class="torso"></div>
+<div class="arm"><div class="hand"></div></div>
+<div class="phone">
+<div class="phone-screen">
+<div class="qr-mini"></div>
+<div class="face-dot"></div>
+</div>
+</div>
+</div>
+</div>
+<div id="feedLabel" class="feed-label">ПОДКЛЮЧЕНИЕ К КАМЕРЕ</div>
+<div id="notice" class="notice">Разрешите доступ к камере в окне браузера.</div>
+</div>
+</section>
+<aside class="panel">
+<div class="panel-head">
+<strong id="rightTitle">Статус</strong>
+<span id="sourcePill" class="pill">ОЖИДАНИЕ</span>
+</div>
+<div class="panel-body">
+<div class="status-list">
+<div class="status" id="stCamera"><span>Камера</span><strong>ожидание</strong></div>
+<div class="status" id="stPhone"><span>Телефон</span><strong>ожидание</strong></div>
+<div class="status" id="stQr"><span>Код на экране</span><strong>ожидание</strong></div>
+<div class="status" id="stFace"><span>Лицо</span><strong>ожидание</strong></div>
+<div class="status verifier-only" id="stConsistency"><span>Согласованность</span><strong>ожидание</strong></div>
+</div>
+<div class="metrics verifier-only">
+<div class="metric"><small>PHONE CONF.</small><strong id="mPhone">—</strong></div>
+<div class="metric"><small>FACE CONF.</small><strong id="mFace">—</strong></div>
+<div class="metric"><small>QR STATE</small><strong id="mQr">—</strong></div>
+</div>
+<div id="result" class="result"><small>Результат</small><strong id="resultText">Ожидание</strong></div>
+<div id="log" class="log verifier-only"><div>00:00.000 · ready</div></div>
+<div id="technicalNote" class="note verifier-only">Демонстрационный режим используется только когда камера недоступна или выбран вручную.</div>
+</div>
+</aside>
+</div>
 </main>
-
 <script>
 (() => {
-  'use strict';
-
-  const entry = document.getElementById('entry');
-  const app = document.getElementById('app');
-  const video = document.getElementById('video');
-  const overlay = document.getElementById('overlay');
-  const ctx = overlay.getContext('2d');
-  const simFeed = document.getElementById('simFeed');
-  const feedLabel = document.getElementById('feedLabel');
-  const notice = document.getElementById('notice');
-  const modePill = document.getElementById('modePill');
-  const sourcePill = document.getElementById('sourcePill');
-  const rightTitle = document.getElementById('rightTitle');
-  const challengeText = document.getElementById('challengeText');
-  const liveBtn = document.getElementById('liveBtn');
-  const simBtn = document.getElementById('simBtn');
-  const result = document.getElementById('result');
-  const resultText = document.getElementById('resultText');
-  const log = document.getElementById('log');
-
-  const statuses = {
-    camera: document.getElementById('stCamera'),
-    phone: document.getElementById('stPhone'),
-    qr: document.getElementById('stQr'),
-    face: document.getElementById('stFace'),
-    challenge: document.getElementById('stChallenge'),
-    consistency: document.getElementById('stConsistency')
-  };
-
-  const metrics = {
-    phone: document.getElementById('mPhone'),
-    face: document.getElementById('mFace'),
-    qr: document.getElementById('mQr'),
-    motion: document.getElementById('mMotion')
-  };
-
-  let mode = 'operator';
-  let source = 'idle';
-  let stream = null;
-  let barcodeDetector = null;
-  let faceDetector = null;
-  let running = false;
-  let challenge = null;
-  let baseline = null;
-  let simTimers = [];
-  let t0 = performance.now();
-
-  const EXPECTED_QR = 'PROFILE-B-DEMO|STATIC-QR|V1';
-
-  function suggestMode() {
-    let mobile = null;
-    if (navigator.userAgentData && typeof navigator.userAgentData.mobile === 'boolean') {
-      mobile = navigator.userAgentData.mobile;
-    }
-    if (mobile === null) {
-      const coarse = window.matchMedia?.('(pointer: coarse)').matches ?? false;
-      const noHover = window.matchMedia?.('(hover: none)').matches ?? false;
-      const touch = (navigator.maxTouchPoints || 0) > 0;
-      const narrow = Math.min(window.screen?.width || innerWidth, window.screen?.height || innerHeight) <= 820;
-      mobile = coarse && noHover && touch && narrow;
-    }
-    const suggested = mobile ? 'verifier' : 'operator';
-    document.querySelector(`[data-mode="${suggested}"]`)?.classList.add('recommended');
-  }
-
-  function setStatus(key, cls, text) {
-    const el = statuses[key];
-    el.classList.remove('ok','warn','bad');
-    if (cls) el.classList.add(cls);
-    el.querySelector('strong').textContent = text;
-  }
-
-  function addLog(text) {
-    const t = ((performance.now() - t0) / 1000).toFixed(3).padStart(6,'0');
-    const div = document.createElement('div');
-    div.textContent = `${t} · ${text}`;
-    log.appendChild(div);
-    log.scrollTop = log.scrollHeight;
-  }
-
-  function clearSimTimers() {
-    simTimers.forEach(clearTimeout);
-    simTimers = [];
-  }
-
-  function later(ms, fn) {
-    simTimers.push(setTimeout(fn, ms));
-  }
-
-  function stopCamera() {
-    running = false;
-    if (stream) {
-      stream.getTracks().forEach(track => { try { track.stop(); } catch (_) {} });
-      stream = null;
-    }
-    video.srcObject = null;
-  }
-
-  function resetResult() {
-    result.classList.remove('pass','fail');
-    resultText.textContent = 'Ожидание';
-    setStatus('phone','','ожидание');
-    setStatus('qr','','ожидание');
-    setStatus('face','','ожидание');
-    setStatus('challenge','','ожидание');
-    setStatus('consistency','','ожидание');
-    Object.values(metrics).forEach(el => el.textContent = '—');
-  }
-
-  function chooseChallenge() {
-    const options = [
-      {id:'right',label:'Переместите телефон вправо'},
-      {id:'left',label:'Переместите телефон влево'},
-      {id:'closer',label:'Поднесите телефон ближе'}
-    ];
-    challenge = options[Math.floor(Math.random()*options.length)];
-    challengeText.textContent = challenge.label;
-    baseline = null;
-    resetResult();
-    addLog(`challenge=${challenge.id}`);
-  }
-
-  function applyMode(next) {
-    mode = next === 'verifier' ? 'verifier' : 'operator';
-    location.hash = mode;
-    entry.classList.add('hidden');
-    app.classList.remove('hidden');
-    modePill.textContent = mode === 'verifier' ? 'ТЕЛЕФОН' : 'ВЕБ-КАМЕРА ПК';
-    rightTitle.textContent = mode === 'verifier' ? 'Дополнительные статусы' : 'Статус';
-    document.querySelectorAll('.verifier-only').forEach(el => el.classList.toggle('hidden', mode !== 'verifier'));
-    if (!challenge) chooseChallenge();
-  }
-
-  async function enterMode(next) {
-    applyMode(next);
-    await startLive();
-  }
-
-  document.querySelectorAll('[data-mode]').forEach(btn => {
-    btn.addEventListener('click', () => { void enterMode(btn.dataset.mode); });
-  });
-
-  document.getElementById('homeBtn').addEventListener('click', () => {
-    stopCamera();
-    clearSimTimers();
-    source = 'idle';
-    app.classList.add('hidden');
-    entry.classList.remove('hidden');
-    history.replaceState(null,'',location.pathname + location.search);
-  });
-
-  function showLive() {
-    source = 'live';
-    clearSimTimers();
-    simFeed.classList.add('hidden');
-    video.classList.remove('hidden');
-    overlay.classList.remove('hidden');
-    liveBtn.classList.add('active');
-    simBtn.classList.remove('active');
-    feedLabel.textContent = 'КАМЕРА';
-    sourcePill.textContent = 'LIVE';
-    notice.textContent = 'Расположите лицо и экран телефона в кадре.';
-  }
-
-  function showDemo(reason = 'Камера недоступна. Показан демонстрационный сценарий.') {
-    source = 'sim';
-    stopCamera();
-    video.classList.add('hidden');
-    overlay.classList.add('hidden');
-    simFeed.classList.remove('hidden');
-    liveBtn.classList.remove('active');
-    simBtn.classList.add('active');
-    feedLabel.textContent = 'ДЕМОНСТРАЦИЯ';
-    sourcePill.textContent = 'ДЕМО';
-    notice.textContent = reason;
-    setStatus('camera','warn','демо');
-    runPresentation();
-  }
-
-  async function requestCamera() {
-    const attempts = [
-      {audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}},
-      {audio:false,video:true}
-    ];
-    let last = null;
-    for (const constraints of attempts) {
-      try { return await navigator.mediaDevices.getUserMedia(constraints); }
-      catch (e) {
-        last = e;
-        if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e;
-      }
-    }
-    throw last || new Error('Camera unavailable');
-  }
-
-  async function startLive() {
-    clearSimTimers();
-    stopCamera();
-    resetResult();
-    source = 'idle';
-    simFeed.classList.add('hidden');
-    video.classList.add('hidden');
-    overlay.classList.add('hidden');
-    feedLabel.textContent = 'ПОДКЛЮЧЕНИЕ К КАМЕРЕ';
-    sourcePill.textContent = 'ОЖИДАНИЕ';
-    notice.textContent = 'Разрешите доступ к камере в окне браузера.';
-    setStatus('camera','warn','запрос доступа');
-    t0 = performance.now();
-    log.innerHTML = '';
-    addLog('camera permission requested');
-
-    if (!navigator.mediaDevices?.getUserMedia) {
-      addLog('Camera API unavailable');
-      showDemo('Камера не поддерживается этим браузером. Показан демонстрационный сценарий.');
-      return;
-    }
-
-    try {
-      stream = await requestCamera();
-      showLive();
-      video.srcObject = stream;
-      await video.play();
-      setStatus('camera','ok','подключена');
-      addLog('camera started');
-
-      if ('BarcodeDetector' in window) {
-        try { barcodeDetector = new BarcodeDetector({formats:['qr_code']}); }
-        catch (_) { barcodeDetector = new BarcodeDetector(); }
-        addLog('BarcodeDetector enabled');
-      } else {
-        barcodeDetector = null;
-        setStatus('qr','warn','не поддерживается');
-        addLog('BarcodeDetector unavailable');
-      }
-
-      if ('FaceDetector' in window) {
-        try { faceDetector = new FaceDetector({fastMode:true,maxDetectedFaces:4}); }
-        catch (_) { faceDetector = null; }
-        if (!faceDetector) setStatus('face','warn','не поддерживается');
-        addLog(faceDetector ? 'FaceDetector enabled' : 'FaceDetector unavailable');
-      } else {
-        faceDetector = null;
-        setStatus('face','warn','не поддерживается');
-        addLog('FaceDetector unavailable');
-      }
-
-      running = true;
-    } catch (e) {
-      addLog(`camera unavailable: ${e.name || e}`);
-      const denied = e && (e.name === 'NotAllowedError' || e.name === 'SecurityError');
-      showDemo(denied
-        ? 'Доступ к камере не разрешён. Показан демонстрационный сценарий.'
-        : 'Не удалось подключить камеру. Показан демонстрационный сценарий.');
-    }
-  }
-
-  function runPresentation() {
-    clearSimTimers();
-    resetResult();
-    simFeed.dataset.step = '0';
-    t0 = performance.now();
-    log.innerHTML = '';
-    addLog('demo started');
-
-    later(450, () => {
-      simFeed.dataset.step = '1';
-      setStatus('phone','warn','поиск');
-      addLog('phone enters frame');
-    });
-    later(1000, () => {
-      simFeed.dataset.step = '2';
-      setStatus('phone','ok','найден');
-      metrics.phone.textContent = '0.99';
-      addLog('phone detected conf=0.99');
-    });
-    later(1450, () => {
-      setStatus('qr','ok','прочитан');
-      metrics.qr.textContent = 'valid';
-      addLog('QR recognized');
-    });
-    later(1850, () => {
-      setStatus('face','ok','найдено');
-      metrics.face.textContent = '0.97';
-      addLog('face detected');
-    });
-    later(2350, () => {
-      simFeed.dataset.step = '3';
-      setStatus('challenge','ok','выполнено');
-      metrics.motion.textContent = '+84 px';
-      addLog('motion matched challenge');
-    });
-    later(2850, () => {
-      setStatus('consistency','ok','норма');
-      result.classList.add('pass');
-      resultText.textContent = 'Проверка пройдена';
-      addLog('FINAL PASS');
-    });
-  }
-
-  function boxMetrics(box) {
-    return {cx:box.x+box.width/2,cy:box.y+box.height/2,area:box.width*box.height,box};
-  }
-
-  function checkChallenge(m) {
-    if (!challenge) return;
-    metrics.motion.textContent = baseline ? `${Math.round(m.cx-baseline.cx)} px` : '0 px';
-
-    if (!baseline) {
-      baseline = {...m};
-      setStatus('challenge','warn','выполните команду');
-      return;
-    }
-
-    const dx = m.cx - baseline.cx;
-    const ratio = baseline.area > 0 ? m.area / baseline.area : 1;
-    const threshold = Math.max(45, video.videoWidth * 0.05);
-    let pass = false;
-
-    if (challenge.id === 'right') pass = dx > threshold;
-    if (challenge.id === 'left') pass = dx < -threshold;
-    if (challenge.id === 'closer') pass = ratio > 1.45;
-
-    if (pass) {
-      setStatus('challenge','ok','выполнено');
-      setStatus('consistency','ok','норма');
-      result.classList.add('pass');
-      resultText.textContent = 'Проверка пройдена';
-      addLog(`challenge passed dx=${Math.round(dx)} ratio=${ratio.toFixed(2)}`);
-    }
-  }
-
-  async function frameLoop() {
-    if (running && source === 'live' && video.videoWidth) {
-      if (overlay.width !== video.videoWidth || overlay.height !== video.videoHeight) {
-        overlay.width = video.videoWidth;
-        overlay.height = video.videoHeight;
-      }
-      ctx.clearRect(0,0,overlay.width,overlay.height);
-
-      if (barcodeDetector) {
-        try {
-          const codes = await barcodeDetector.detect(video);
-          const code = codes.find(item => item.rawValue === EXPECTED_QR);
-          if (code) {
-            const m = boxMetrics(code.boundingBox);
-            setStatus('qr','ok','прочитан');
-            setStatus('phone','ok','найден');
-            metrics.phone.textContent = 'detected';
-            metrics.qr.textContent = 'valid';
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 4;
-            ctx.strokeRect(m.box.x,m.box.y,m.box.width,m.box.height);
-            checkChallenge(m);
-          } else {
-            setStatus('qr','warn','поиск');
-          }
-        } catch (_) {
-          setStatus('qr','warn','ошибка чтения');
-        }
-      }
-
-      if (faceDetector) {
-        try {
-          const faces = await faceDetector.detect(video);
-          setStatus('face',faces.length?'ok':'warn',faces.length?'найдено':'поиск');
-          metrics.face.textContent = String(faces.length);
-        } catch (_) {
-          setStatus('face','warn','ошибка проверки');
-        }
-      }
-    }
-    requestAnimationFrame(frameLoop);
-  }
-
-  liveBtn.addEventListener('click', () => { void startLive(); });
-  simBtn.addEventListener('click', () => showDemo('Показан демонстрационный сценарий.'));
-  document.getElementById('challengeBtn').addEventListener('click', () => {
-    chooseChallenge();
-    if (source === 'sim') runPresentation();
-  });
-
-  suggestMode();
-
-  const initial = location.hash.replace('#','');
-  if (initial === 'operator' || initial === 'verifier') {
-    void enterMode(initial);
-  }
-
-  requestAnimationFrame(frameLoop);
+'use strict';
+const entry = document.getElementById('entry');
+const app = document.getElementById('app');
+const video = document.getElementById('video');
+const overlay = document.getElementById('overlay');
+const ctx = overlay.getContext('2d');
+const simFeed = document.getElementById('simFeed');
+const feedLabel = document.getElementById('feedLabel');
+const notice = document.getElementById('notice');
+const modePill = document.getElementById('modePill');
+const sourcePill = document.getElementById('sourcePill');
+const rightTitle = document.getElementById('rightTitle');
+const liveBtn = document.getElementById('liveBtn');
+const simBtn = document.getElementById('simBtn');
+const result = document.getElementById('result');
+const resultText = document.getElementById('resultText');
+const log = document.getElementById('log');
+const statuses = {
+camera: document.getElementById('stCamera'),
+phone: document.getElementById('stPhone'),
+qr: document.getElementById('stQr'),
+face: document.getElementById('stFace'),
+consistency: document.getElementById('stConsistency')
+};
+const metrics = {
+phone: document.getElementById('mPhone'),
+face: document.getElementById('mFace'),
+qr: document.getElementById('mQr')
+};
+let mode = 'operator';
+let source = 'idle';
+let stream = null;
+let barcodeDetector = null;
+let faceDetector = null;
+let running = false;
+let simTimers = [];
+let t0 = performance.now();
+const EXPECTED_QR = 'PROFILE-B-DEMO|STATIC-QR|V1';
+function suggestMode() {
+let mobile = null;
+if (navigator.userAgentData && typeof navigator.userAgentData.mobile === 'boolean') {
+mobile = navigator.userAgentData.mobile;
+}
+if (mobile === null) {
+const coarse = window.matchMedia?.('(pointer: coarse)').matches ?? false;
+const noHover = window.matchMedia?.('(hover: none)').matches ?? false;
+const touch = (navigator.maxTouchPoints || 0) > 0;
+const narrow = Math.min(window.screen?.width || innerWidth, window.screen?.height || innerHeight) <= 820;
+mobile = coarse && noHover && touch && narrow;
+}
+const suggested = mobile ? 'verifier' : 'operator';
+document.querySelector(`[data-mode="${suggested}"]`)?.classList.add('recommended');
+}
+function setStatus(key, cls, text) {
+const el = statuses[key];
+el.classList.remove('ok','warn','bad');
+if (cls) el.classList.add(cls);
+el.querySelector('strong').textContent = text;
+}
+function addLog(text) {
+const t = ((performance.now() - t0) / 1000).toFixed(3).padStart(6,'0');
+const div = document.createElement('div');
+div.textContent = `${t} · ${text}`;
+log.appendChild(div);
+log.scrollTop = log.scrollHeight;
+}
+function clearSimTimers() {
+simTimers.forEach(clearTimeout);
+simTimers = [];
+}
+function later(ms, fn) {
+simTimers.push(setTimeout(fn, ms));
+}
+function stopCamera() {
+running = false;
+if (stream) {
+stream.getTracks().forEach(track => { try { track.stop(); } catch (_) {} });
+stream = null;
+}
+video.srcObject = null;
+}
+function resetResult() {
+result.classList.remove('pass','fail');
+resultText.textContent = 'Ожидание';
+setStatus('phone','','ожидание');
+setStatus('qr','','ожидание');
+setStatus('face','','ожидание');
+setStatus('consistency','','ожидание');
+Object.values(metrics).forEach(el => el.textContent = '—');
+}
+function applyMode(next) {
+mode = next === 'verifier' ? 'verifier' : 'operator';
+location.hash = mode;
+entry.classList.add('hidden');
+app.classList.remove('hidden');
+modePill.textContent = mode === 'verifier' ? 'ТЕЛЕФОН' : 'ВЕБ-КАМЕРА ПК';
+rightTitle.textContent = mode === 'verifier' ? 'Дополнительные статусы' : 'Статус';
+document.querySelectorAll('.verifier-only').forEach(el => el.classList.toggle('hidden', mode !== 'verifier'));
+}
+async function enterMode(next) {
+applyMode(next);
+await startLive();
+}
+document.querySelectorAll('[data-mode]').forEach(btn => {
+btn.addEventListener('click', () => { void enterMode(btn.dataset.mode); });
+});
+document.getElementById('homeBtn').addEventListener('click', () => {
+stopCamera();
+clearSimTimers();
+source = 'idle';
+app.classList.add('hidden');
+entry.classList.remove('hidden');
+history.replaceState(null,'',location.pathname + location.search);
+});
+function showLive() {
+source = 'live';
+clearSimTimers();
+simFeed.classList.add('hidden');
+video.classList.remove('hidden');
+overlay.classList.remove('hidden');
+liveBtn.classList.add('active');
+simBtn.classList.remove('active');
+feedLabel.textContent = 'КАМЕРА';
+sourcePill.textContent = 'LIVE';
+notice.textContent = 'Расположите лицо и экран телефона в кадре.';
+}
+function showDemo(reason = 'Камера недоступна. Показан демонстрационный сценарий.') {
+source = 'sim';
+stopCamera();
+video.classList.add('hidden');
+overlay.classList.add('hidden');
+simFeed.classList.remove('hidden');
+liveBtn.classList.remove('active');
+simBtn.classList.add('active');
+feedLabel.textContent = 'ДЕМОНСТРАЦИЯ';
+sourcePill.textContent = 'ДЕМО';
+notice.textContent = reason;
+setStatus('camera','warn','демо');
+runPresentation();
+}
+async function requestCamera() {
+const attempts = [
+{audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}},
+{audio:false,video:true}
+];
+let last = null;
+for (const constraints of attempts) {
+try { return await navigator.mediaDevices.getUserMedia(constraints); }
+catch (e) {
+last = e;
+if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e;
+}
+}
+throw last || new Error('Camera unavailable');
+}
+async function startLive() {
+clearSimTimers();
+stopCamera();
+resetResult();
+source = 'idle';
+simFeed.classList.add('hidden');
+video.classList.add('hidden');
+overlay.classList.add('hidden');
+feedLabel.textContent = 'ПОДКЛЮЧЕНИЕ К КАМЕРЕ';
+sourcePill.textContent = 'ОЖИДАНИЕ';
+notice.textContent = 'Разрешите доступ к камере в окне браузера.';
+setStatus('camera','warn','запрос доступа');
+t0 = performance.now();
+log.innerHTML = '';
+addLog('camera permission requested');
+if (!navigator.mediaDevices?.getUserMedia) {
+addLog('Camera API unavailable');
+showDemo('Камера не поддерживается этим браузером. Показан демонстрационный сценарий.');
+return;
+}
+try {
+stream = await requestCamera();
+showLive();
+video.srcObject = stream;
+await video.play();
+setStatus('camera','ok','подключена');
+addLog('camera started');
+if ('BarcodeDetector' in window) {
+try { barcodeDetector = new BarcodeDetector({formats:['qr_code']}); }
+catch (_) { barcodeDetector = new BarcodeDetector(); }
+addLog('BarcodeDetector enabled');
+} else {
+barcodeDetector = null;
+setStatus('qr','warn','не поддерживается');
+addLog('BarcodeDetector unavailable');
+}
+if ('FaceDetector' in window) {
+try { faceDetector = new FaceDetector({fastMode:true,maxDetectedFaces:4}); }
+catch (_) { faceDetector = null; }
+if (!faceDetector) setStatus('face','warn','не поддерживается');
+addLog(faceDetector ? 'FaceDetector enabled' : 'FaceDetector unavailable');
+} else {
+faceDetector = null;
+setStatus('face','warn','не поддерживается');
+addLog('FaceDetector unavailable');
+}
+running = true;
+} catch (e) {
+addLog(`camera unavailable: ${e.name || e}`);
+const denied = e && (e.name === 'NotAllowedError' || e.name === 'SecurityError');
+showDemo(denied
+? 'Доступ к камере не разрешён. Показан демонстрационный сценарий.'
+: 'Не удалось подключить камеру. Показан демонстрационный сценарий.');
+}
+}
+function runPresentation() {
+clearSimTimers();
+resetResult();
+simFeed.dataset.step = '0';
+t0 = performance.now();
+log.innerHTML = '';
+addLog('demo started');
+later(450, () => {
+simFeed.dataset.step = '1';
+setStatus('phone','warn','поиск');
+addLog('phone enters frame');
+});
+later(1000, () => {
+simFeed.dataset.step = '2';
+setStatus('phone','ok','найден');
+metrics.phone.textContent = '0.99';
+addLog('phone detected conf=0.99');
+});
+later(1450, () => {
+setStatus('qr','ok','прочитан');
+metrics.qr.textContent = 'valid';
+addLog('QR recognized');
+});
+later(1850, () => {
+setStatus('face','ok','найдено');
+metrics.face.textContent = '0.97';
+addLog('face detected');
+});
+later(2350, () => {
+setStatus('consistency','ok','норма');
+result.classList.add('pass');
+resultText.textContent = 'Проверка пройдена';
+addLog('FINAL PASS');
+});
+}
+function boxMetrics(box) {
+return {cx:box.x+box.width/2,cy:box.y+box.height/2,area:box.width*box.height,box};
+}
+async function frameLoop() {
+if (running && source === 'live' && video.videoWidth) {
+if (overlay.width !== video.videoWidth || overlay.height !== video.videoHeight) {
+overlay.width = video.videoWidth;
+overlay.height = video.videoHeight;
+}
+ctx.clearRect(0,0,overlay.width,overlay.height);
+if (barcodeDetector) {
+try {
+const codes = await barcodeDetector.detect(video);
+const code = codes.find(item => item.rawValue === EXPECTED_QR);
+if (code) {
+const m = boxMetrics(code.boundingBox);
+setStatus('qr','ok','прочитан');
+setStatus('phone','ok','найден');
+metrics.phone.textContent = 'detected';
+metrics.qr.textContent = 'valid';
+ctx.strokeStyle = '#ffffff';
+ctx.lineWidth = 4;
+ctx.strokeRect(m.box.x,m.box.y,m.box.width,m.box.height);
+} else {
+setStatus('qr','warn','поиск');
+}
+} catch (_) {
+setStatus('qr','warn','ошибка чтения');
+}
+}
+if (faceDetector) {
+try {
+const faces = await faceDetector.detect(video);
+setStatus('face',faces.length?'ok':'warn',faces.length?'найдено':'поиск');
+metrics.face.textContent = String(faces.length);
+} catch (_) {
+setStatus('face','warn','ошибка проверки');
+}
+}
+}
+requestAnimationFrame(frameLoop);
+}
+liveBtn.addEventListener('click', () => { void startLive(); });
+simBtn.addEventListener('click', () => showDemo('Показан демонстрационный сценарий.'));
+suggestMode();
+const initial = location.hash.replace('#','');
+if (initial === 'operator' || initial === 'verifier') {
+void enterMode(initial);
+}
+requestAnimationFrame(frameLoop);
 })();
 </script>
 </body>
