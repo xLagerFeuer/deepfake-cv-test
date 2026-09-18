@@ -82,9 +82,10 @@ button{font:inherit;cursor:pointer}
 .entry h1{margin:9px 0 0;font-size:32px;letter-spacing:-.02em}
 .instructions{margin:18px 0 0;padding-left:22px;color:var(--muted);font-size:15px;line-height:1.75}
 .mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:24px}
-.mode{text-align:left;padding:17px;border-radius:12px;border:1px solid var(--line-strong);background:var(--surface);color:var(--text);transition:border-color .15s,box-shadow .15s,background .15s}
+.mode{display:flex;align-items:center;gap:12px;text-align:left;padding:17px;border-radius:12px;border:1px solid var(--line-strong);background:var(--surface);color:var(--text);transition:border-color .15s,box-shadow .15s,background .15s}
 .mode:hover{background:var(--surface2);border-color:#aeb6bd}
 .mode strong{display:block;font-size:15px}
+.mode-icon{width:24px;height:24px;flex:0 0 24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .mode.recommended{border-color:var(--text);box-shadow:0 0 0 1px var(--text);background:#fafafa}
 .foot{display:grid;gap:5px;margin-top:20px;color:#7a848d;font-size:12px;line-height:1.45}
 @media(max-width:920px){.layout{grid-template-columns:1fr}.feed{min-height:340px}}
@@ -104,8 +105,23 @@ button{font:inherit;cursor:pointer}
     </ol>
 
     <div class="mode-grid">
-      <button class="mode" data-mode="operator"><strong>Веб-камера ПК</strong></button>
-      <button class="mode" data-mode="verifier"><strong>Телефон</strong></button>
+      <button class="mode" data-mode="operator">
+        <svg class="mode-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="12" rx="2"></rect>
+          <path d="M8 20h8"></path>
+          <path d="M12 16v4"></path>
+          <circle cx="12" cy="10" r="2.2"></circle>
+        </svg>
+        <strong>Веб-камера ПК</strong>
+      </button>
+      <button class="mode" data-mode="verifier">
+        <svg class="mode-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="7" y="2.5" width="10" height="19" rx="2.2"></rect>
+          <path d="M10.5 5h3"></path>
+          <circle cx="12" cy="18.2" r=".7"></circle>
+        </svg>
+        <strong>Телефон</strong>
+      </button>
     </div>
 
     <div class="foot">
