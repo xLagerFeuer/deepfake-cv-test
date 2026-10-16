@@ -1,200 +1,128 @@
-# ResearchSpace — Profile B camera verification prototype
+# Camera KYC — Cross-device camera verification prototype
 
-Интерактивный браузерный прототип Profile B: пользователь открывает одну и ту же страницу на **ПК** и **телефоне**, после чего веб-камера ПК наблюдает физический экран телефона.
+**ResearchSpace / Profile B** is an experimental, browser-based computer-vision prototype exploring how a phone's physical screen might serve as an additional observable signal during a video-verification flow.
 
-На экране телефона одновременно отображаются:
+[**Live demo**](https://researchspace.ru/) · **English** · [Русский](README.ru.md)
 
-- live-видео с камеры телефона;
-- QR-код текущего demo-протокола.
+> [!IMPORTANT]
+> This is a **proof of concept, not a production-ready KYC, identity verification, or deepfake-detection system**. A positive result only means that the PC camera detected the expected demonstration QR value and a face somewhere in its video frame. It does **not** establish that the face is on the phone's screen, that the phone is trusted, or that the signals belong to the same authenticated session.
 
-ПК пытается обнаружить в своём видеопотоке:
+## What it demonstrates
 
-- лицо;
-- ожидаемый QR-код.
+The same static web page is opened independently on **two devices**:
 
-Идея прототипа — показать минимальный UX и техническую связку для сценария, где уже используемый / прогретый телефон становится дополнительным фактором проверки во время видеосессии.
+1. **Phone:** displays its rear-camera live preview with a QR marker overlaid on the screen.
+2. **PC:** uses its webcam to observe the physical phone screen (and the surrounding scene).
+3. **PC-side JavaScript:** searches the webcam frames for the expected QR value using **jsQR** and for faces using **pico.js**.
+4. **UI:** shows detection indicators and reports **“Signals detected”** if both signals are present.
 
-## Текущее состояние
+There is **no phone-to-PC signaling channel**, no shared session handshake, and no backend verification service in the current version. The observation happens through the PC webcam.
 
-В репозитории три файла:
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph PHONE["Phone · browser"]
+        P1["Rear-camera preview"]
+        P2["Static QR marker<br/>RSB1-DEMO"]
+        PS["Physical phone display"]
+        P1 --> PS
+        P2 --> PS
+    end
+
+    subgraph PC["PC · browser"]
+        CAM["PC webcam frames"]
+        QR["jsQR<br/>Read QR code"]
+        FACE["pico.js<br/>Detect face"]
+        CHECK{"Expected QR<br/>AND face detected?"}
+        PASS["UI: Signals detected"]
+        WAIT["UI: Waiting / searching"]
+
+        CAM --> QR
+        CAM --> FACE
+        QR --> CHECK
+        FACE --> CHECK
+        CHECK -->|Yes| PASS
+        CHECK -->|No| WAIT
+    end
+
+    PS -->|"Physical, optical observation"| CAM
+```
+
+**Important distinction:** the two detectors evaluate the PC webcam image independently. The current code does **not** test whether the detected face lies inside the phone's screen, whether the QR and face are spatially related, or whether the phone belongs to a trusted user.
+
+## Try the demo
+
+1. On a **PC**, open [researchspace.ru](https://researchspace.ru/) and choose **“Веб-камера ПК”** (PC webcam).
+2. Allow access to the PC webcam.
+3. On a **phone**, open the same URL and choose **“Телефон”** (Phone).
+4. Allow the phone to use its camera.
+5. Aim the phone's camera at the person, then hold the **phone screen toward the PC webcam** so that the PC can see the QR marker and a face in its frame.
+6. Watch the detection statuses in the PC interface.
+
+The hosted demo's interface is currently **in Russian**. This repository README is the English-language overview; the website and its language are unchanged.
+
+If the camera is unavailable or permission is denied, the interface may enter an explicitly labeled **presentation fallback**. A successful-looking fallback result is **simulated**, not evidence of a completed real-world verification.
+
+### Running it locally
+
+```bash
+git clone https://github.com/xLagerFeuer/deepfake-cv-test.git
+cd deepfake-cv-test
+python3 -m http.server 8000
+```
+
+Open `http://localhost:8000` in a browser on the same computer. For the two-device scenario, use the HTTPS-hosted demo (or another secure origin accessible from both devices), because browser camera APIs require a secure context. The page loads the face and QR libraries, and the face cascade, from external URLs.
+
+## Implementation
+
+| Part | Current implementation |
+| --- | --- |
+| Application | Single static `index.html` file; HTML, CSS, and JavaScript |
+| PC camera | `navigator.mediaDevices.getUserMedia()` |
+| Phone camera | `getUserMedia()`, preferring `facingMode: environment` |
+| Face detector | [pico.js](https://github.com/nenadmarkus/picojs), running in the PC browser |
+| QR decoder | [jsQR](https://github.com/cozmo/jsQR), running in the PC browser |
+| Demo QR payload | `RSB1-DEMO` (fixed, not a session-issued challenge) |
+| Detection result | Expected QR text **AND** a face detected in the PC's camera frame |
+| Video processing | Browser-side; no application backend receives camera frames for CV processing |
+| Camera-unavailable behavior | Presentation fallback, including simulated status transitions |
+
+**What “Signals detected” means:** the PC-side code has found both indicators. It is a **UI/detection state**, not a security assertion, KYC pass, liveness proof, or identity match.
+
+## Project structure
 
 ```text
-index.html   — весь интерфейс и browser-side логика
-README.md    — описание прототипа
-CNAME        — researchspace.ru
+.
+├── README.md       # English overview (default on GitHub)
+├── README.ru.md    # Original Russian documentation
+├── index.html      # Entire deployed interface and browser-side logic
+└── CNAME           # Custom-domain configuration: researchspace.ru
 ```
 
-Основной demo доступен через:
+The website is served from `index.html`. This documentation does not change its behavior.
 
-```text
-https://researchspace.ru/
-```
+## Intended research direction
 
-Точка входа одна — `index.html`. На стартовом экране пользователь выбирает, на каком устройстве открыта страница:
+**Profile B** explores whether a previously authenticated or trusted phone can contribute an additional, physically observable factor to a video-verification process. The hypothesis is that coordinating several independently observable signals in one physical scene could raise an attacker's cost compared with a single video stream.
 
-- **Веб-камера ПК**;
-- **Телефон**.
+This repository is a minimal **computer-vision and UX feasibility prototype**, **not an evaluation demonstrating increased attack resistance**.
 
-Интерфейс адаптивный и рассчитан на открытие одной страницы с двух устройств.
+A more complete design would need, among other things:
 
-## Как запустить демонстрацию
+- Server-issued, single-use, session-bound challenges and expiration.
+- Cryptographic device/session association and device attestation.
+- Reliable detection of phone and screen boundaries.
+- Geometric checks linking the QR marker, displayed face, and physical screen.
+- Active liveness or spatial challenges, including phone movement.
+- Anti-replay protections, policy checks, and a verifiable audit trail.
+- Real security evaluation with relevant benign and adversarial cases.
 
-1. На ПК открыть `researchspace.ru` и выбрать **«Веб-камера ПК»**.
-2. Разрешить браузеру доступ к веб-камере.
-3. На телефоне открыть тот же адрес и выбрать **«Телефон»**.
-4. Разрешить доступ к камере телефона.
-5. Развернуть телефон экраном к веб-камере ПК так, чтобы в кадре ПК был виден экран телефона.
-6. На экране телефона остаётся QR-код, а его камера показывает пользователя.
-7. ПК локально анализирует кадры и обновляет статусы обнаружения QR и лица.
+Until those controls exist and are evaluated, this prototype should not be used to make real identity-verification or anti-deepfake decisions.
 
-Если камера на ПК недоступна или пользователь не разрешил доступ, автоматически включается демонстрационный fallback.
+## Languages
 
-## Режим ПК
+- **English (default):** `README.md`
+- **Русский:** [README.ru.md](README.ru.md)
 
-Режим ПК использует:
-
-```js
-navigator.mediaDevices.getUserMedia(...)
-```
-
-и отображает live-видеопоток с веб-камеры.
-
-Поверх него рисуются найденные области:
-
-- bounding box лица;
-- контур QR-кода.
-
-В правой панели отображаются статусы:
-
-```text
-Камера
-Телефон / QR
-Код на экране
-Лицо
-Результат
-```
-
-Текущий положительный результат достигается, когда одновременно выполнены два условия:
-
-```text
-ожидаемый QR обнаружен
-+
-лицо обнаружено
-```
-
-После этого интерфейс показывает:
-
-```text
-Сигналы обнаружены
-```
-
-## Режим телефона
-
-Телефон пытается открыть заднюю камеру (`facingMode: environment`) и показывает её изображение на весь экран.
-
-Поверх live-видео отображается QR-код. В текущей версии его demo-значение:
-
-```text
-RSB1-DEMO
-```
-
-Такой layout позволяет веб-камере ПК видеть физический экран телефона, на котором одновременно присутствуют:
-
-- изображение пользователя с камеры телефона;
-- QR-маркер.
-
-Если камера телефона недоступна, вместо live-видео показывается явно обозначенный демонстрационный экран; QR остаётся видимым.
-
-## Computer Vision
-
-Сейчас используются два browser-side компонента:
-
-- **pico.js** — детекция лица;
-- **jsQR** — чтение QR-кода.
-
-Зависимости загружаются из публичных CDN / GitHub, после чего обработка видеокадров выполняется в браузере.
-
-Приложение не содержит собственного backend для передачи или анализа видео. Кадры камеры не отправляются приложением на сервер для CV-обработки.
-
-## Fallback без камеры
-
-Если браузер не предоставляет Camera API, доступ к камере запрещён или подключение завершается ошибкой, PC-режим переключается на встроенный демонстрационный сценарий.
-
-Он последовательно показывает ожидаемые состояния:
-
-```text
-QR обнаружен
-→ код прочитан
-→ лицо обнаружено
-→ сигналы обнаружены
-```
-
-Это только UX / presentation fallback. Он не является результатом реальной проверки.
-
-## Что прототип уже демонстрирует
-
-Текущая версия подтверждает реализуемость следующего минимального потока:
-
-```text
-один web entry point
-+
-отдельный интерфейс для ПК и телефона
-+
-реальная камера на обоих устройствах
-+
-телефон показывает live camera + QR
-+
-веб-камера ПК физически наблюдает экран телефона
-+
-browser-side QR detection
-+
-browser-side face detection
-+
-визуализация detection evidence
-+
-fallback для презентации без доступа к камере
-```
-
-То есть это уже не только статический mockup, а работающий **browser CV spike + interactive system prototype**.
-
-## Что пока не реализовано
-
-Текущий прототип не следует трактовать как production KYC / anti-deepfake verifier.
-
-В частности, пока отсутствуют:
-
-- серверная выдача одноразового session-bound QR challenge;
-- криптографическая привязка QR к конкретному пользователю, устройству и видеосессии;
-- подтверждение того, что обнаруженное лицо находится именно внутри физического экрана телефона;
-- надёжная детекция границ самого телефона / его экрана;
-- cross-signal geometry между телефоном, QR и лицом;
-- active liveness / spatial challenge с движением или вращением телефона;
-- device attestation и проверка целостности мобильного клиента / ОС;
-- накопленная история доверенного устройства;
-- production-grade anti-replay и session expiry;
-- серверный audit trail и policy engine.
-
-Эти элементы относятся к следующему уровню Profile B, а не к текущему минимальному CV-прототипу.
-
-## Архитектурный смысл Profile B
-
-Profile B предполагает использование телефона как дополнительного независимого наблюдаемого фактора во время видеопроверки.
-
-Он может использоваться:
-
-1. как дополнительный фактор безопасности поверх более простого процесса;
-2. как обязательный путь для клиента / сотрудника, который не удовлетворяет условиям Profile A, но имеет доступ к подходящему телефону.
-
-В полной версии телефон должен быть заранее известен системе и иметь собственную историю доверия / аутентификации. Тогда задача видеопотока — не просто повторно выполнить обычный 2FA, а повысить стоимость подмены: атакующему требуется согласованно подделать несколько наблюдаемых каналов в рамках одной физической сцены.
-
-## Ограничение текущего результата
-
-Сейчас PASS означает только:
-
-```text
-валидный demo QR присутствует в кадре ПК
-AND
-детектор лица видит лицо в кадре ПК
-```
-
-Это ещё не доказывает физическую или криптографическую связь между лицом, экраном телефона и доверенным устройством. README намеренно фиксирует эту границу, чтобы demo не выдавался за более сильный security result, чем реально реализован.
+The [live demo](https://researchspace.ru/) and its Russian UI are maintained separately from the English GitHub documentation.
